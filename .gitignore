@@ -33,3 +33,7 @@ build/
 ### Maven Wrapper ###
 /.mvn/wrapper/maven-wrapper.jar
 /.env/
+/src/test/java/hwr/oop/budgetbook/test.csv
+
+### Additional ###
+.csv
