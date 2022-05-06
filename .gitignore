@@ -36,4 +36,4 @@ build/
 /src/test/java/hwr/oop/budgetbook/test.csv
 
 ### Additional ###
-.csv
+*.csv

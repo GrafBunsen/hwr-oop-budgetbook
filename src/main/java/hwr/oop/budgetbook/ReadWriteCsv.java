@@ -1,9 +1,6 @@
 package hwr.oop.budgetbook;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 
 
 public class ReadWriteCsv {
@@ -20,27 +17,48 @@ public class ReadWriteCsv {
         return data;
     }
 
-    public void printTable(String[][] table){
-        String[][] output = table;
-        int[][] cellLength = getLengthOfAllCells(table);
-        int longestCell = getLongestCell(cellLength);
-        output = makeAllCellsTheSameLength(output, cellLength, longestCell);
-        printTheCleanedOutput(output, cellLength);
+    public void writeDataset(String[] dataset,String path) throws IOException {
+        boolean doesExist= new File(path).exists();
+        FileWriter csvWriter = new FileWriter(path,doesExist);
+        if(!doesExist){
+            csvWriter.append("Username");
+            csvWriter.append(";");
+            csvWriter.append("Identifier");
+            csvWriter.append(";");
+            csvWriter.append("Firstname");
+            csvWriter.append(";");
+            csvWriter.append("Lastname");
+        }
+
+        csvWriter.append("\n");
+
+        for (String s : dataset) {
+            csvWriter.append(s).append(";");
+        }
+
+        csvWriter.flush();
+        csvWriter.close();
     }
 
-    private void printTheCleanedOutput(String[][] output, int[][] cellLength) {
-        for (int i = 0; i < cellLength.length; i++) {
+    public void printTable(String[][] table){
+        int longestCell = getLongestCell(table);
+        String[][] output = makeAllCellsTheSameLength(table, longestCell);
+        printTheCleanedOutput(output);
+    }
+
+    private void printTheCleanedOutput(String[][] output) {
+        for (String[] strings : output) {
             System.out.print("| ");
-            for (int j = 0; j < cellLength[i].length; j++) {
-                System.out.print(output[i][j]+" | ");
+            for (String string : strings) {
+                System.out.print(string + " | ");
             }
             System.out.println();
         }
     }
 
-    private String[][] makeAllCellsTheSameLength(String[][] output, int[][] cellLength, int longestCell) {
-        for (int i = 0; i < cellLength.length; i++) {
-            for (int j = 0; j < cellLength[i].length; j++) {
+    private String[][] makeAllCellsTheSameLength(String[][] output, int longestCell) {
+        for (int i = 0; i < output.length; i++) {
+            for (int j = 0; j < output[i].length; j++) {
                 while(output[i][j].length()< longestCell){
                     output[i][j] = output[i][j]+" ";
                 }
@@ -49,29 +67,21 @@ public class ReadWriteCsv {
         return output;
     }
 
-    private int getLongestCell(int[][] cellLength) {
+    private int getLongestCell(String[][] table) {
         int longestCell=0;
-        for (int[] ints : cellLength) {
-            for (int anInt : ints) {
-                if (longestCell < anInt) {
-                    longestCell = anInt;
+
+        for (String[] strings : table) {
+            for (String string : strings) {
+                if (longestCell < string.length()) {
+                    longestCell = string.length();
                 }
             }
+
         }
         return longestCell;
     }
 
-    private int[][] getLengthOfAllCells(String[][] table) {
-        int[][] cellLength = new int[table.length][table[0].length];
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                cellLength[i][j] = table[i][j].length();
-            }
-        }
-        return cellLength;
-    }
-
-    private String @NotNull [] @NotNull [] append(String @NotNull [] @NotNull [] oldArray, String[] newLine) {
+    private String[][] append(String[][] oldArray, String[] newLine) {
         int oldArrayLength = oldArray.length;
         int newArrayLength = oldArrayLength + 1;
 
