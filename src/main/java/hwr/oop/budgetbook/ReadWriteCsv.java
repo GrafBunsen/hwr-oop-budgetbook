@@ -9,9 +9,10 @@ public class ReadWriteCsv {
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
         String row;
         String[][] data = new String[0][0];
+        HelperClass helper = new HelperClass();
         while ((row = csvReader.readLine()) != null) {
             String[] line = row.split(",");
-            data = append(data, line);
+            data = helper.append(data, line);
         }
         csvReader.close();
         return data;
@@ -38,19 +39,5 @@ public class ReadWriteCsv {
 
         csvWriter.flush();
         csvWriter.close();
-    }
-
-    private String[][] append(String[][] oldArray, String[] newLine) {
-        int oldArrayLength = oldArray.length;
-        int newArrayLength = oldArrayLength + 1;
-
-        String[][] newArray = new String[newArrayLength][];
-
-        if (0 != oldArrayLength) {
-            System.arraycopy(oldArray, 0, newArray, 0, oldArrayLength);
-        }
-
-        newArray[newArrayLength - 1] = newLine;
-        return newArray;
     }
 }
