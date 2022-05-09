@@ -10,37 +10,37 @@ public class ReadWriteCsv {
         String row;
         String[][] data = new String[0][0];
         while ((row = csvReader.readLine()) != null) {
-            String[] line = row.split(";");
+            String[] line = row.split(",");
             data = append(data, line);
         }
         csvReader.close();
         return data;
     }
 
-    public void writeDataset(String[] dataset,String path) throws IOException {
-        boolean doesExist= new File(path).exists();
-        FileWriter csvWriter = new FileWriter(path,doesExist);
-        if(!doesExist){
+    public void writeDataset(String[] dataset, String path) throws IOException {
+        boolean doesExist = new File(path).exists();
+        FileWriter csvWriter = new FileWriter(path, doesExist);
+        if (!doesExist) {
             csvWriter.append("Username");
-            csvWriter.append(";");
+            csvWriter.append(",");
             csvWriter.append("Identifier");
-            csvWriter.append(";");
+            csvWriter.append(",");
             csvWriter.append("Firstname");
-            csvWriter.append(";");
+            csvWriter.append(",");
             csvWriter.append("Lastname");
         }
 
         csvWriter.append("\n");
 
         for (String s : dataset) {
-            csvWriter.append(s).append(";");
+            csvWriter.append(s).append(",");
         }
 
         csvWriter.flush();
         csvWriter.close();
     }
 
-    public void printTable(String[][] table){
+    public void printTable(String[][] table) {
         int longestCell = getLongestCell(table);
         String[][] output = makeAllCellsTheSameLength(table, longestCell);
         printTheCleanedOutput(output);
@@ -59,8 +59,8 @@ public class ReadWriteCsv {
     private String[][] makeAllCellsTheSameLength(String[][] output, int longestCell) {
         for (int i = 0; i < output.length; i++) {
             for (int j = 0; j < output[i].length; j++) {
-                while(output[i][j].length()< longestCell){
-                    output[i][j] = output[i][j]+" ";
+                while (output[i][j].length() < longestCell) {
+                    output[i][j] = output[i][j] + " ";
                 }
             }
         }
@@ -68,7 +68,7 @@ public class ReadWriteCsv {
     }
 
     private int getLongestCell(String[][] table) {
-        int longestCell=0;
+        int longestCell = 0;
 
         for (String[] strings : table) {
             for (String string : strings) {
