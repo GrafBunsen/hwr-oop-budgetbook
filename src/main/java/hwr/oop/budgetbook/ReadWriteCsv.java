@@ -22,13 +22,15 @@ public class ReadWriteCsv {
         boolean doesExist = new File(path).exists();
         FileWriter csvWriter = new FileWriter(path, doesExist);
         if (!doesExist) {
-            csvWriter.append("Username");
+            csvWriter.append("ID");
             csvWriter.append(",");
-            csvWriter.append("Identifier");
+            csvWriter.append("Datum");
             csvWriter.append(",");
-            csvWriter.append("Firstname");
+            csvWriter.append("Betrag");
             csvWriter.append(",");
-            csvWriter.append("Lastname");
+            csvWriter.append("Kategorie");
+            csvWriter.append(",");
+            csvWriter.append("Beschreibung");
         }
 
         csvWriter.append("\n");
