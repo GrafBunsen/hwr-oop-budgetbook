@@ -33,6 +33,3 @@ build/
 ### Maven Wrapper ###
 /.mvn/wrapper/maven-wrapper.jar
 /.env/
-
-### Additional ###
-test1.csv

@@ -18,10 +18,11 @@ public class ReadWriteCsv {
         return data;
     }
 
-    public void writeDataset(String[] dataset, String path) throws IOException {
+    public void writeDataset(String[] dataset, String path, boolean override) throws IOException {
         boolean doesExist = new File(path).exists();
-        FileWriter csvWriter = new FileWriter(path, doesExist);
-        if (!doesExist) {
+        boolean append = doesExist & !override;
+        FileWriter csvWriter = new FileWriter(path, append);
+        if (!append) {
             csvWriter.append("ID");
             csvWriter.append(",");
             csvWriter.append("Datum");
