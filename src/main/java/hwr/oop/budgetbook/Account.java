@@ -42,11 +42,15 @@ public class Account {
     }
 
     public void addLine(ArrayList<String> line) {
-        String id = String.valueOf(table.size());
-        ArrayList<String> newLine = new ArrayList<>();
-        newLine.add(id);
-        newLine.addAll(line);
-        table.add(newLine);
+        if (line.size() == (table.get(0).size() - 1)) {
+            String id = String.valueOf(table.size());
+            ArrayList<String> newLine = new ArrayList<>();
+            newLine.add(id);
+            newLine.addAll(line);
+            table.add(newLine);
+        } else {
+            throw new RuntimeException("Invalid Line");
+        }
     }
 
     private ArrayList<ArrayList<String>> readCsvFile(String pathToCsv) throws IOException {

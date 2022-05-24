@@ -105,6 +105,37 @@ public class AccountTest {
         }
     }
 
+    @Test
+    void addEntry_checkIfLineIsValid_invalidLineIsRejected() {
+        String path = ".\\src\\test\\resources\\testAddEntry.csv";
+        try {
+            Account account = new Account(path);
+            ArrayList<String> invalidLine = getTestLine();
+            invalidLine.remove(1);
+            account.addLine(invalidLine);
+            String id = String.valueOf(account.getTable().size() - 1);
+            invalidLine.add(0, id);
+            assertThat(account.getTable()).doesNotContain(invalidLine);
+        } catch (IOException | RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void addEntry_checkIfLineIsValid_validLineIsAccepted() {
+        String path = ".\\src\\test\\resources\\testAddEntry.csv";
+        try {
+            Account account = new Account(path);
+            ArrayList<String> validLine = getTestLine();
+            account.addLine(validLine);
+            String id = String.valueOf(account.getTable().size() - 1);
+            validLine.add(0, id);
+            assertThat(account.getTable()).contains(validLine);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private ArrayList<String> getHeader() {
         ArrayList<String> header = new ArrayList<>();
         header.add("ID");
