@@ -24,16 +24,7 @@ public class Account {
     }
 
     Account(String path) throws IOException {
-        boolean doesExist = new File(path).exists();
-        this.path = path;
-
-        if (doesExist) {
-            table = readCsvFile(path);
-        } else {
-            table = new ArrayList<>();
-            ArrayList<String> header = createHeader();
-            table.add(header);
-        }
+        this(path,false);
     }
 
     public ArrayList<ArrayList<String>> getTable() {

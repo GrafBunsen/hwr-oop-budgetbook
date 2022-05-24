@@ -16,18 +16,8 @@ public class AccountTest {
         try {
             Account account = new Account(path);
             ArrayList<ArrayList<String>> expectedTable = new ArrayList<>();
-            ArrayList<String> line1 = new ArrayList<>();
-            line1.add("ID");
-            line1.add("Datum");
-            line1.add("Betrag");
-            line1.add("Kategorie");
-            line1.add("Beschreibung");
-            ArrayList<String> line2 = new ArrayList<>();
-            line2.add("1");
-            line2.add("220101");
-            line2.add("100");
-            line2.add("Sonstige Einnahmen");
-            line2.add("Zinsen");
+            ArrayList<String> line1 = getHeader();
+            ArrayList<String> line2 = getExpectedLine();
 
             expectedTable.add(line1);
             expectedTable.add(line2);
@@ -75,19 +65,10 @@ public class AccountTest {
         }
     }
 
-    private ArrayList<String> getTestLine() {
-        ArrayList<String> givenLine = new ArrayList<>();
-        givenLine.add("220102");
-        givenLine.add("50");
-        givenLine.add("Einkauf");
-        givenLine.add("Wocheneinkauf REWE");
-        return givenLine;
-    }
-
     @Test
     void saveTable_ifALineIsAddedAndTheFileIsSavedItIsPartOfTheTableAfterReadingAgain() {
         ArrayList<String> givenLine = getTestLine();
-        String path = ".\\src\\test\\resources\\saveTable.csv";
+        String path = ".\\src\\test\\resources\\testSaveTable.csv";
 
         try {
             Account account = new Account(path, true);
@@ -100,6 +81,53 @@ public class AccountTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void Account_TableIsAppendedOrCreatedEmpty(){
+        String path = ".\\src\\test\\resources\\testConstructor.csv";
+        ArrayList<ArrayList<String>> expectedTableAppend = new ArrayList<>();
+        ArrayList<ArrayList<String>> expectedTableOverride = new ArrayList<>();
+        ArrayList<String> line1 = getHeader();
+        ArrayList<String> line2 = getExpectedLine();
+        expectedTableAppend.add(line1);
+        expectedTableAppend.add(line2);
+        expectedTableOverride.add(line1);
+
+
+        try {
+            Account appendedAccount = new Account(path,false);
+            assertThat(appendedAccount.getTable()).isEqualTo(expectedTableAppend);
+            Account overrideAccount = new Account(path,true);
+            assertThat(overrideAccount.getTable()).isEqualTo(expectedTableOverride);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ArrayList<String> getHeader() {
+        ArrayList<String> header = new ArrayList<>();
+        header.add("ID");
+        header.add("Datum");
+        header.add("Betrag");
+        header.add("Kategorie");
+        header.add("Beschreibung");
+        return header;
+    }
+
+    private ArrayList<String> getTestLine() {
+        ArrayList<String> givenLine = new ArrayList<>();
+        givenLine.add("220102");
+        givenLine.add("50");
+        givenLine.add("Einkauf");
+        givenLine.add("Wocheneinkauf REWE");
+        return givenLine;
+    }
+    private ArrayList<String> getExpectedLine() {
+        ArrayList<String> expectedLine = new ArrayList<>();
+        expectedLine.add("1");
+        expectedLine.addAll(getTestLine());
+        return expectedLine;
     }
 }
 
