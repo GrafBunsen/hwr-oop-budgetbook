@@ -24,7 +24,7 @@ public class Account {
     }
 
     Account(String path) throws IOException {
-        this(path,false);
+        this(path, false);
     }
 
     public ArrayList<ArrayList<String>> getTable() {

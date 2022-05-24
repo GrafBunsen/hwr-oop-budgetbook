@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountTest {
     @Test
-    void Account_constructorReadsExistingTable(){
+    void Account_constructorReadsExistingTable() {
         String path = ".\\src\\test\\resources\\testConstructor.csv";
 
         try {
@@ -84,7 +84,7 @@ public class AccountTest {
     }
 
     @Test
-    void Account_TableIsAppendedOrCreatedEmpty(){
+    void Account_TableIsAppendedOrCreatedEmpty() {
         String path = ".\\src\\test\\resources\\testConstructor.csv";
         ArrayList<ArrayList<String>> expectedTableAppend = new ArrayList<>();
         ArrayList<ArrayList<String>> expectedTableOverride = new ArrayList<>();
@@ -96,9 +96,9 @@ public class AccountTest {
 
 
         try {
-            Account appendedAccount = new Account(path,false);
+            Account appendedAccount = new Account(path, false);
             assertThat(appendedAccount.getTable()).isEqualTo(expectedTableAppend);
-            Account overrideAccount = new Account(path,true);
+            Account overrideAccount = new Account(path, true);
             assertThat(overrideAccount.getTable()).isEqualTo(expectedTableOverride);
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,6 +123,7 @@ public class AccountTest {
         givenLine.add("Wocheneinkauf REWE");
         return givenLine;
     }
+
     private ArrayList<String> getExpectedLine() {
         ArrayList<String> expectedLine = new ArrayList<>();
         expectedLine.add("1");
