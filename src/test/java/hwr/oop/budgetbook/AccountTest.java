@@ -56,10 +56,10 @@ public class AccountTest {
     }
 
     @Nested
-    class AddEntryTest {
+    class AddLineTest {
 
         @Test
-        void addEntry_givenLineIsExpectedToBePartOfTheTable() {
+        void addLine_givenLineIsExpectedToBePartOfTheTable() {
             ArrayList<String> givenLine = getTestLine();
             ArrayList<String> expectedLine = new ArrayList<>();
             expectedLine.add("2");
@@ -67,7 +67,7 @@ public class AccountTest {
             expectedLine.add("50");
             expectedLine.add("Einkauf");
             expectedLine.add("Wocheneinkauf REWE");
-            String path = ".\\src\\test\\resources\\testAddEntry.csv";
+            String path = ".\\src\\test\\resources\\testAddLine.csv";
 
             try {
                 Account account = new Account(path);
@@ -79,9 +79,9 @@ public class AccountTest {
         }
 
         @Test
-        void addEntry_IdIsIncremented() {
+        void addLine_IdIsIncremented() {
             ArrayList<String> givenLine = getTestLine();
-            String path = ".\\src\\test\\resources\\testAddEntry.csv";
+            String path = ".\\src\\test\\resources\\testAddLine.csv";
 
             try {
                 Account account = new Account(path);
@@ -96,8 +96,8 @@ public class AccountTest {
         }
 
         @Test
-        void addEntry_checkIfLineIsValid_invalidLineIsRejected() {
-            String path = ".\\src\\test\\resources\\testAddEntry.csv";
+        void addLine_checkIfLineIsValid_invalidLineIsRejected() {
+            String path = ".\\src\\test\\resources\\testAddLine.csv";
             try {
                 Account account = new Account(path);
                 ArrayList<String> invalidLine = getTestLine();
@@ -112,8 +112,8 @@ public class AccountTest {
         }
 
         @Test
-        void addEntry_checkIfLineIsValid_validLineIsAccepted() {
-            String path = ".\\src\\test\\resources\\testAddEntry.csv";
+        void addLine_checkIfLineIsValid_validLineIsAccepted() {
+            String path = ".\\src\\test\\resources\\testAddLine.csv";
             try {
                 Account account = new Account(path);
                 ArrayList<String> validLine = getTestLine();
@@ -121,6 +121,45 @@ public class AccountTest {
                 String id = String.valueOf(account.getTable().size() - 1);
                 validLine.add(0, id);
                 assertThat(account.getTable()).contains(validLine);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Test
+        void addLine_LineIsInsertedAtSpecifiedID() {
+            String path = ".\\src\\test\\resources\\testInsertLine.csv";
+            ArrayList<String> givenLine = getTestLine();
+            ArrayList<String> differentLine = getTestLine();
+            differentLine.set(2, "99");
+            ArrayList<String> expectedLine = getExpectedLine();
+            try {
+                Account account = new Account(path, true);
+                account.addLine(differentLine);
+                account.addLine(differentLine);
+                account.addLine(differentLine);
+                account.addLine(1, givenLine);
+                assertThat(account.getTable().get(1)).isEqualTo(expectedLine);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Test
+        void addLine_IdsAreStillCountingUpAfterALineIsAddedAtASpecifiedID() {
+            String path = ".\\src\\test\\resources\\testInsertLine.csv";
+            ArrayList<String> givenLine = getTestLine();
+            try {
+                Account account = new Account(path, true);
+                account.addLine(givenLine);
+                account.addLine(givenLine);
+                account.addLine(1, givenLine);
+                String firstId = account.getTable().get(1).get(0);
+                String secondId = account.getTable().get(2).get(0);
+                String thirdId = account.getTable().get(3).get(0);
+                assertThat(firstId).isEqualTo("1");
+                assertThat(secondId).isEqualTo("2");
+                assertThat(thirdId).isEqualTo("3");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -152,8 +191,8 @@ public class AccountTest {
     @Nested
     class RemoveLineTest {
         @Test
-        void removeLine_anEntrySpecifiedByIdIsRemoved() {
-            String path = ".\\src\\test\\resources\\testRemoveEntry.csv";
+        void removeLine_aLineSpecifiedByIdIsRemoved() {
+            String path = ".\\src\\test\\resources\\testRemoveLine.csv";
             ArrayList<String> givenLine = getTestLine();
             ArrayList<String> expectedLine = getExpectedLine();
             try {
@@ -168,7 +207,7 @@ public class AccountTest {
 
         @Test
         void removeLine_IdsAreStillCountingUpAfterALineIsRemoved() {
-            String path = ".\\src\\test\\resources\\testRemoveEntry.csv";
+            String path = ".\\src\\test\\resources\\testRemoveLine.csv";
             ArrayList<String> givenLine = getTestLine();
             try {
                 Account account = new Account(path, true);
@@ -187,7 +226,7 @@ public class AccountTest {
 
         @Test
         void removeLastLine_LastLineOfTheTableIsRemoved() {
-            String path = ".\\src\\test\\resources\\testRemoveEntry.csv";
+            String path = ".\\src\\test\\resources\\testRemoveLine.csv";
             ArrayList<String> givenLine = getTestLine();
             ArrayList<String> expectedLine = getExpectedLine();
             expectedLine.set(0, "3");

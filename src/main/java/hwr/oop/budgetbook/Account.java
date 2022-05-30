@@ -32,15 +32,33 @@ public class Account {
     }
 
     public void addLine(ArrayList<String> line) {
+        String id = String.valueOf(table.size());
+        addLine(Integer.parseInt(id), line);
+    }
+
+    public void addLine(int id, ArrayList<String> line) {
         if (line.size() == (table.get(0).size() - 1)) {
-            String id = String.valueOf(table.size());
             ArrayList<String> newLine = new ArrayList<>();
-            newLine.add(id);
+            newLine.add(String.valueOf(id));
             newLine.addAll(line);
-            table.add(newLine);
+            table.add(id, newLine);
         } else {
             throw new RuntimeException("Invalid Line");
         }
+        for (int i = id + 1; i < table.size(); i++) {
+            table.get(i).set(0, String.valueOf(i));
+        }
+    }
+
+    public void removeLine(int id) {
+        table.remove(id);
+        for (int i = id; i < table.size(); i++) {
+            table.get(i).set(0, String.valueOf(i));
+        }
+    }
+
+    public void removeLastLine() {
+        removeLine(table.size() - 1);
     }
 
     private ArrayList<String> createHeader() {
@@ -78,16 +96,5 @@ public class Account {
         }
         csvWriter.flush();
         csvWriter.close();
-    }
-
-    public void removeLine(int id) {
-        table.remove(id);
-        for (int i = id; i < table.size(); i++) {
-            table.get(i).set(0, String.valueOf(i));
-        }
-    }
-
-    public void removeLastLine() {
-        removeLine(table.size() - 1);
     }
 }
