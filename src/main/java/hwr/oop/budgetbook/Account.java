@@ -31,16 +31,6 @@ public class Account {
         return table;
     }
 
-    private ArrayList<String> createHeader() {
-        ArrayList<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        return header;
-    }
-
     public void addLine(ArrayList<String> line) {
         if (line.size() == (table.get(0).size() - 1)) {
             String id = String.valueOf(table.size());
@@ -51,6 +41,16 @@ public class Account {
         } else {
             throw new RuntimeException("Invalid Line");
         }
+    }
+
+    private ArrayList<String> createHeader() {
+        ArrayList<String> header = new ArrayList<>();
+        header.add("ID");
+        header.add("Datum");
+        header.add("Betrag");
+        header.add("Kategorie");
+        header.add("Beschreibung");
+        return header;
     }
 
     private ArrayList<ArrayList<String>> readCsvFile(String pathToCsv) throws IOException {
@@ -80,4 +80,14 @@ public class Account {
         csvWriter.close();
     }
 
+    public void removeLine(int id) {
+        table.remove(id);
+        for (int i = id; i < table.size(); i++) {
+            table.get(i).set(0, String.valueOf(i));
+        }
+    }
+
+    public void removeLastLine() {
+        removeLine(table.size() - 1);
+    }
 }
