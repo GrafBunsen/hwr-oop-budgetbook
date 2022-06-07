@@ -44,19 +44,20 @@ public class AccountTest {
         void Account_constructorReadsExistingTable() {
             String path = ".\\src\\test\\resources\\testConstructor.csv";
 
+            Account account=null;
             try {
-                Account account = new Account(path);
-                List<List<String>> expectedTable = new ArrayList<>();
-                List<String> line1 = getHeader();
-                List<String> line2 = getExpectedLine();
-
-                expectedTable.add(line1);
-                expectedTable.add(line2);
-
-                assertThat(account.getTable()).isEqualTo(expectedTable);
+                account = new Account(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            List<List<String>> expectedTable = new ArrayList<>();
+            List<String> line1 = getHeader();
+            List<String> line2 = getExpectedLine();
+
+            expectedTable.add(line1);
+            expectedTable.add(line2);
+
+            assertThat(account.getTable()).isEqualTo(expectedTable);
         }
 
         @Test
@@ -71,14 +72,20 @@ public class AccountTest {
             expectedTableOverride.add(line1);
 
 
+            Account appendedAccount = null;
             try {
-                Account appendedAccount = new Account(path, false);
-                assertThat(appendedAccount.getTable()).isEqualTo(expectedTableAppend);
-                Account overrideAccount = new Account(path, true);
-                assertThat(overrideAccount.getTable()).isEqualTo(expectedTableOverride);
+                appendedAccount = new Account(path, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            assertThat(appendedAccount.getTable()).isEqualTo(expectedTableAppend);
+            Account overrideAccount = null;
+            try {
+                overrideAccount = new Account(path, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            assertThat(overrideAccount.getTable()).isEqualTo(expectedTableOverride);
         }
     }
 
@@ -96,13 +103,14 @@ public class AccountTest {
             expectedLine.add("Wocheneinkauf REWE");
             String path = ".\\src\\test\\resources\\testAddLine.csv";
 
+            Account account = null;
             try {
-                Account account = new Account(path);
-                account.addLine(givenLine);
-                assertThat(account.getTable()).contains(expectedLine);
+                account = new Account(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            assertThat(account.getTable()).contains(expectedLine);
         }
 
         @Test
@@ -110,47 +118,54 @@ public class AccountTest {
             List<String> givenLine = getTestLine();
             String path = ".\\src\\test\\resources\\testAddLine.csv";
 
+            Account account = null;
             try {
-                Account account = new Account(path);
-                account.addLine(givenLine);
-                List<List<String>> table = account.getTable();
-                String id = table.get(table.size() - 1).get(0);
-                String expectedId = String.valueOf(table.size() - 1);
-                assertThat(id).isEqualTo(expectedId);
+                account = new Account(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            List<List<String>> table = account.getTable();
+            String id = table.get(table.size() - 1).get(0);
+            String expectedId = String.valueOf(table.size() - 1);
+            assertThat(id).isEqualTo(expectedId);
         }
 
         @Test
         void addLine_checkIfLineIsValid_invalidLineIsRejected() {
             String path = ".\\src\\test\\resources\\testAddLine.csv";
+            Account account=null;
             try {
-                Account account = new Account(path);
-                List<String> invalidLine = getTestLine();
-                invalidLine.remove(1);
-                account.addLine(invalidLine);
-                String id = String.valueOf(account.getTable().size() - 1);
-                invalidLine.add(0, id);
-                assertThat(account.getTable()).doesNotContain(invalidLine);
-            } catch (IOException | RuntimeException e) {
+                account = new Account(path);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+            List<String> invalidLine = getTestLine();
+            invalidLine.remove(1);
+            try {
+                account.addLine(invalidLine);
+            }catch (RuntimeException e){
+                e.printStackTrace();
+            }
+            String id = String.valueOf(account.getTable().size() - 1);
+            invalidLine.add(0, id);
+            assertThat(account.getTable()).doesNotContain(invalidLine);
         }
 
         @Test
         void addLine_checkIfLineIsValid_validLineIsAccepted() {
             String path = ".\\src\\test\\resources\\testAddLine.csv";
+            Account account = null;
             try {
-                Account account = new Account(path);
-                List<String> validLine = getTestLine();
-                account.addLine(validLine);
-                String id = String.valueOf(account.getTable().size() - 1);
-                validLine.add(0, id);
-                assertThat(account.getTable()).contains(validLine);
+                account = new Account(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            List<String> validLine = getTestLine();
+            account.addLine(validLine);
+            String id = String.valueOf(account.getTable().size() - 1);
+            validLine.add(0, id);
+            assertThat(account.getTable()).contains(validLine);
         }
 
         @Test
@@ -160,36 +175,38 @@ public class AccountTest {
             List<String> differentLine = getTestLine();
             differentLine.set(2, "99");
             List<String> expectedLine = getExpectedLine();
+            Account account = null;
             try {
-                Account account = new Account(path, true);
-                account.addLine(differentLine);
-                account.addLine(differentLine);
-                account.addLine(differentLine);
-                account.addLine(1, givenLine);
-                assertThat(account.getTable().get(1)).isEqualTo(expectedLine);
+                account = new Account(path, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(differentLine);
+            account.addLine(differentLine);
+            account.addLine(differentLine);
+            account.addLine(1, givenLine);
+            assertThat(account.getTable().get(1)).isEqualTo(expectedLine);
         }
 
         @Test
         void addLine_IdsAreStillCountingUpAfterALineIsAddedAtASpecifiedID() {
             String path = ".\\src\\test\\resources\\testInsertLine.csv";
             List<String> givenLine = getTestLine();
+            Account account = null;
             try {
-                Account account = new Account(path, true);
-                account.addLine(givenLine);
-                account.addLine(givenLine);
-                account.addLine(1, givenLine);
-                String firstId = account.getTable().get(1).get(0);
-                String secondId = account.getTable().get(2).get(0);
-                String thirdId = account.getTable().get(3).get(0);
-                assertThat(firstId).isEqualTo("1");
-                assertThat(secondId).isEqualTo("2");
-                assertThat(thirdId).isEqualTo("3");
+                account = new Account(path, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            account.addLine(givenLine);
+            account.addLine(1, givenLine);
+            String firstId = account.getTable().get(1).get(0);
+            String secondId = account.getTable().get(2).get(0);
+            String thirdId = account.getTable().get(3).get(0);
+            assertThat(firstId).isEqualTo("1");
+            assertThat(secondId).isEqualTo("2");
+            assertThat(thirdId).isEqualTo("3");
         }
     }
 
@@ -201,17 +218,27 @@ public class AccountTest {
             List<String> givenLine = getTestLine();
             String path = ".\\src\\test\\resources\\testSaveTable.csv";
 
+            Account account = null;
             try {
-                Account account = new Account(path, true);
-                account.addLine(givenLine);
-                account.saveTable();
-                List<List<String>> savedTable = account.getTable();
-                Account newAccount = new Account(path);
-                List<List<String>> loadedTable = newAccount.getTable();
-                assertThat(savedTable).isEqualTo(loadedTable);
+                account = new Account(path, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            try {
+                account.saveTable();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<List<String>> savedTable = account.getTable();
+            Account newAccount = null;
+            try {
+                newAccount = new Account(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<List<String>> loadedTable = newAccount.getTable();
+            assertThat(savedTable).isEqualTo(loadedTable);
         }
     }
 
@@ -222,33 +249,35 @@ public class AccountTest {
             String path = ".\\src\\test\\resources\\testRemoveLine.csv";
             List<String> givenLine = getTestLine();
             List<String> expectedLine = getExpectedLine();
+            Account account = null;
             try {
-                Account account = new Account(path, true);
-                account.addLine(givenLine);
-                account.removeLine(1);
-                assertThat(account.getTable()).doesNotContain(expectedLine);
+                account = new Account(path, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            account.removeLine(1);
+            assertThat(account.getTable()).doesNotContain(expectedLine);
         }
 
         @Test
         void removeLine_IdsAreStillCountingUpAfterALineIsRemoved() {
             String path = ".\\src\\test\\resources\\testRemoveLine.csv";
             List<String> givenLine = getTestLine();
+            Account account = null;
             try {
-                Account account = new Account(path, true);
-                account.addLine(givenLine);
-                account.addLine(givenLine);
-                account.addLine(givenLine);
-                account.removeLine(1);
-                String firstId = account.getTable().get(1).get(0);
-                String secondId = account.getTable().get(2).get(0);
-                assertThat(firstId).isEqualTo("1");
-                assertThat(secondId).isEqualTo("2");
+                account = new Account(path, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            account.addLine(givenLine);
+            account.addLine(givenLine);
+            account.removeLine(1);
+            String firstId = account.getTable().get(1).get(0);
+            String secondId = account.getTable().get(2).get(0);
+            assertThat(firstId).isEqualTo("1");
+            assertThat(secondId).isEqualTo("2");
         }
 
         @Test
@@ -257,16 +286,17 @@ public class AccountTest {
             List<String> givenLine = getTestLine();
             List<String> expectedLine = getExpectedLine();
             expectedLine.set(0, "3");
+            Account account = null;
             try {
-                Account account = new Account(path, true);
-                account.addLine(givenLine);
-                account.addLine(givenLine);
-                account.addLine(givenLine);
-                account.removeLastLine();
-                assertThat(account.getTable()).doesNotContain(expectedLine);
+                account = new Account(path, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            account.addLine(givenLine);
+            account.addLine(givenLine);
+            account.addLine(givenLine);
+            account.removeLastLine();
+            assertThat(account.getTable()).doesNotContain(expectedLine);
         }
     }
 }
