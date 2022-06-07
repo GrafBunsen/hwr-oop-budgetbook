@@ -42,7 +42,7 @@ public class AccountTest {
     class ConstructorTest {
         @Test
         void Account_constructorReadsExistingTable() {
-            String path = ".\\src\\test\\resources\\testConstructor.csv";
+            String path = "./src/test/resources/testConstructor.csv";
 
             Account account=null;
             try {
@@ -62,7 +62,7 @@ public class AccountTest {
 
         @Test
         void Account_TableIsAppendedOrCreatedEmpty() {
-            String path = ".\\src\\test\\resources\\testConstructor.csv";
+            String path = "./src/test/resources/testConstructor.csv";
             List<List<String>> expectedTableAppend = new ArrayList<>();
             List<List<String>> expectedTableOverride = new ArrayList<>();
             List<String> line1 = getHeader();
@@ -101,7 +101,7 @@ public class AccountTest {
             expectedLine.add("50");
             expectedLine.add("Einkauf");
             expectedLine.add("Wocheneinkauf REWE");
-            String path = ".\\src\\test\\resources\\testAddLine.csv";
+            String path = "./src/test/resources/testAddLine.csv";
 
             Account account = null;
             try {
@@ -116,7 +116,7 @@ public class AccountTest {
         @Test
         void addLine_IdIsIncremented() {
             List<String> givenLine = getTestLine();
-            String path = ".\\src\\test\\resources\\testAddLine.csv";
+            String path = "./src/test/resources/testAddLine.csv";
 
             Account account = null;
             try {
@@ -133,7 +133,7 @@ public class AccountTest {
 
         @Test
         void addLine_checkIfLineIsValid_invalidLineIsRejected() {
-            String path = ".\\src\\test\\resources\\testAddLine.csv";
+            String path = "./src/test/resources/testAddLine.csv";
             Account account=null;
             try {
                 account = new Account(path);
@@ -154,7 +154,7 @@ public class AccountTest {
 
         @Test
         void addLine_checkIfLineIsValid_validLineIsAccepted() {
-            String path = ".\\src\\test\\resources\\testAddLine.csv";
+            String path = "./src/test/resources/testAddLine.csv";
             Account account = null;
             try {
                 account = new Account(path);
@@ -170,7 +170,7 @@ public class AccountTest {
 
         @Test
         void addLine_LineIsInsertedAtSpecifiedID() {
-            String path = ".\\src\\test\\resources\\testInsertLine.csv";
+            String path = "./src/test/resources/testInsertLine.csv";
             List<String> givenLine = getTestLine();
             List<String> differentLine = getTestLine();
             differentLine.set(2, "99");
@@ -190,7 +190,7 @@ public class AccountTest {
 
         @Test
         void addLine_IdsAreStillCountingUpAfterALineIsAddedAtASpecifiedID() {
-            String path = ".\\src\\test\\resources\\testInsertLine.csv";
+            String path = "./src/test/resources/testInsertLine.csv";
             List<String> givenLine = getTestLine();
             Account account = null;
             try {
@@ -216,7 +216,7 @@ public class AccountTest {
         @Test
         void saveTable_ifALineIsAddedAndTheFileIsSavedItIsPartOfTheTableAfterReadingAgain() {
             List<String> givenLine = getTestLine();
-            String path = ".\\src\\test\\resources\\testSaveTable.csv";
+            String path = "./src/test/resources/testSaveTable.csv";
 
             Account account = null;
             try {
@@ -246,7 +246,7 @@ public class AccountTest {
     class RemoveLineTest {
         @Test
         void removeLine_aLineSpecifiedByIdIsRemoved() {
-            String path = ".\\src\\test\\resources\\testRemoveLine.csv";
+            String path = "./src/test/resources/testRemoveLine.csv";
             List<String> givenLine = getTestLine();
             List<String> expectedLine = getExpectedLine();
             Account account = null;
@@ -262,7 +262,7 @@ public class AccountTest {
 
         @Test
         void removeLine_IdsAreStillCountingUpAfterALineIsRemoved() {
-            String path = ".\\src\\test\\resources\\testRemoveLine.csv";
+            String path = "./src/test/resources/testRemoveLine.csv";
             List<String> givenLine = getTestLine();
             Account account = null;
             try {
@@ -282,7 +282,7 @@ public class AccountTest {
 
         @Test
         void removeLastLine_LastLineOfTheTableIsRemoved() {
-            String path = ".\\src\\test\\resources\\testRemoveLine.csv";
+            String path = "./src/test/resources/testRemoveLine.csv";
             List<String> givenLine = getTestLine();
             List<String> expectedLine = getExpectedLine();
             expectedLine.set(0, "3");
