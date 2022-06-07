@@ -74,7 +74,7 @@ public class AccountTest {
         }
 
         @Test
-        void Account_TableIsNotRead(){
+        void Account_TableIsNotRead() {
             //can't be tested
 
         }
@@ -202,7 +202,7 @@ public class AccountTest {
         }
 
         @Test
-        void saveTable_aRuntimeExceptionIsThrownWhenSavingIsNotPossible(){
+        void saveTable_aRuntimeExceptionIsThrownWhenSavingIsNotPossible() {
             String path = "./src/test/resources/testSaveTableNotPossible.csv"; //this file has to be read-only
             Account account = new Account(path);
             Throwable thrown = catchThrowable(account);
