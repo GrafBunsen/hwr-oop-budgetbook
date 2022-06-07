@@ -31,6 +31,36 @@ public class Account {
         return table;
     }
 
+    public void addLine(ArrayList<String> line) {
+        String id = String.valueOf(table.size());
+        addLine(Integer.parseInt(id), line);
+    }
+
+    public void addLine(int id, ArrayList<String> line) {
+        if (line.size() == (table.get(0).size() - 1)) {
+            ArrayList<String> newLine = new ArrayList<>();
+            newLine.add(String.valueOf(id));
+            newLine.addAll(line);
+            table.add(id, newLine);
+        } else {
+            throw new RuntimeException("Invalid Line");
+        }
+        for (int i = id + 1; i < table.size(); i++) {
+            table.get(i).set(0, String.valueOf(i));
+        }
+    }
+
+    public void removeLine(int id) {
+        table.remove(id);
+        for (int i = id; i < table.size(); i++) {
+            table.get(i).set(0, String.valueOf(i));
+        }
+    }
+
+    public void removeLastLine() {
+        removeLine(table.size() - 1);
+    }
+
     private ArrayList<String> createHeader() {
         ArrayList<String> header = new ArrayList<>();
         header.add("ID");
@@ -39,18 +69,6 @@ public class Account {
         header.add("Kategorie");
         header.add("Beschreibung");
         return header;
-    }
-
-    public void addLine(ArrayList<String> line) {
-        if (line.size() == (table.get(0).size() - 1)) {
-            String id = String.valueOf(table.size());
-            ArrayList<String> newLine = new ArrayList<>();
-            newLine.add(id);
-            newLine.addAll(line);
-            table.add(newLine);
-        } else {
-            throw new RuntimeException("Invalid Line");
-        }
     }
 
     private ArrayList<ArrayList<String>> readCsvFile(String pathToCsv) throws IOException {
@@ -79,5 +97,4 @@ public class Account {
         csvWriter.flush();
         csvWriter.close();
     }
-
 }
