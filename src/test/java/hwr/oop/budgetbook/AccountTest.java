@@ -5,11 +5,38 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AccountTest {
+
+    private List<String> getHeader() {
+        List<String> header = new ArrayList<>();
+        header.add("ID");
+        header.add("Datum");
+        header.add("Betrag");
+        header.add("Kategorie");
+        header.add("Beschreibung");
+        return header;
+    }
+
+    private List<String> getTestLine() {
+        List<String> givenLine = new ArrayList<>();
+        givenLine.add("220102");
+        givenLine.add("50");
+        givenLine.add("Einkauf");
+        givenLine.add("Wocheneinkauf REWE");
+        return givenLine;
+    }
+
+    private List<String> getExpectedLine() {
+        List<String> expectedLine = new ArrayList<>();
+        expectedLine.add("1");
+        expectedLine.addAll(getTestLine());
+        return expectedLine;
+    }
 
     @Nested
     class ConstructorTest {
@@ -19,9 +46,9 @@ public class AccountTest {
 
             try {
                 Account account = new Account(path);
-                ArrayList<ArrayList<String>> expectedTable = new ArrayList<>();
-                ArrayList<String> line1 = getHeader();
-                ArrayList<String> line2 = getExpectedLine();
+                List<List<String>> expectedTable = new ArrayList<>();
+                List<String> line1 = getHeader();
+                List<String> line2 = getExpectedLine();
 
                 expectedTable.add(line1);
                 expectedTable.add(line2);
@@ -35,10 +62,10 @@ public class AccountTest {
         @Test
         void Account_TableIsAppendedOrCreatedEmpty() {
             String path = ".\\src\\test\\resources\\testConstructor.csv";
-            ArrayList<ArrayList<String>> expectedTableAppend = new ArrayList<>();
-            ArrayList<ArrayList<String>> expectedTableOverride = new ArrayList<>();
-            ArrayList<String> line1 = getHeader();
-            ArrayList<String> line2 = getExpectedLine();
+            List<List<String>> expectedTableAppend = new ArrayList<>();
+            List<List<String>> expectedTableOverride = new ArrayList<>();
+            List<String> line1 = getHeader();
+            List<String> line2 = getExpectedLine();
             expectedTableAppend.add(line1);
             expectedTableAppend.add(line2);
             expectedTableOverride.add(line1);
@@ -60,8 +87,8 @@ public class AccountTest {
 
         @Test
         void addLine_givenLineIsExpectedToBePartOfTheTable() {
-            ArrayList<String> givenLine = getTestLine();
-            ArrayList<String> expectedLine = new ArrayList<>();
+            List<String> givenLine = getTestLine();
+            List<String> expectedLine = new ArrayList<>();
             expectedLine.add("2");
             expectedLine.add("220102");
             expectedLine.add("50");
@@ -80,13 +107,13 @@ public class AccountTest {
 
         @Test
         void addLine_IdIsIncremented() {
-            ArrayList<String> givenLine = getTestLine();
+            List<String> givenLine = getTestLine();
             String path = ".\\src\\test\\resources\\testAddLine.csv";
 
             try {
                 Account account = new Account(path);
                 account.addLine(givenLine);
-                ArrayList<ArrayList<String>> table = account.getTable();
+                List<List<String>> table = account.getTable();
                 String id = table.get(table.size() - 1).get(0);
                 String expectedId = String.valueOf(table.size() - 1);
                 assertThat(id).isEqualTo(expectedId);
@@ -100,7 +127,7 @@ public class AccountTest {
             String path = ".\\src\\test\\resources\\testAddLine.csv";
             try {
                 Account account = new Account(path);
-                ArrayList<String> invalidLine = getTestLine();
+                List<String> invalidLine = getTestLine();
                 invalidLine.remove(1);
                 account.addLine(invalidLine);
                 String id = String.valueOf(account.getTable().size() - 1);
@@ -116,7 +143,7 @@ public class AccountTest {
             String path = ".\\src\\test\\resources\\testAddLine.csv";
             try {
                 Account account = new Account(path);
-                ArrayList<String> validLine = getTestLine();
+                List<String> validLine = getTestLine();
                 account.addLine(validLine);
                 String id = String.valueOf(account.getTable().size() - 1);
                 validLine.add(0, id);
@@ -129,10 +156,10 @@ public class AccountTest {
         @Test
         void addLine_LineIsInsertedAtSpecifiedID() {
             String path = ".\\src\\test\\resources\\testInsertLine.csv";
-            ArrayList<String> givenLine = getTestLine();
-            ArrayList<String> differentLine = getTestLine();
+            List<String> givenLine = getTestLine();
+            List<String> differentLine = getTestLine();
             differentLine.set(2, "99");
-            ArrayList<String> expectedLine = getExpectedLine();
+            List<String> expectedLine = getExpectedLine();
             try {
                 Account account = new Account(path, true);
                 account.addLine(differentLine);
@@ -148,7 +175,7 @@ public class AccountTest {
         @Test
         void addLine_IdsAreStillCountingUpAfterALineIsAddedAtASpecifiedID() {
             String path = ".\\src\\test\\resources\\testInsertLine.csv";
-            ArrayList<String> givenLine = getTestLine();
+            List<String> givenLine = getTestLine();
             try {
                 Account account = new Account(path, true);
                 account.addLine(givenLine);
@@ -171,16 +198,16 @@ public class AccountTest {
 
         @Test
         void saveTable_ifALineIsAddedAndTheFileIsSavedItIsPartOfTheTableAfterReadingAgain() {
-            ArrayList<String> givenLine = getTestLine();
+            List<String> givenLine = getTestLine();
             String path = ".\\src\\test\\resources\\testSaveTable.csv";
 
             try {
                 Account account = new Account(path, true);
                 account.addLine(givenLine);
                 account.saveTable();
-                ArrayList<ArrayList<String>> savedTable = account.getTable();
+                List<List<String>> savedTable = account.getTable();
                 Account newAccount = new Account(path);
-                ArrayList<ArrayList<String>> loadedTable = newAccount.getTable();
+                List<List<String>> loadedTable = newAccount.getTable();
                 assertThat(savedTable).isEqualTo(loadedTable);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -193,8 +220,8 @@ public class AccountTest {
         @Test
         void removeLine_aLineSpecifiedByIdIsRemoved() {
             String path = ".\\src\\test\\resources\\testRemoveLine.csv";
-            ArrayList<String> givenLine = getTestLine();
-            ArrayList<String> expectedLine = getExpectedLine();
+            List<String> givenLine = getTestLine();
+            List<String> expectedLine = getExpectedLine();
             try {
                 Account account = new Account(path, true);
                 account.addLine(givenLine);
@@ -208,7 +235,7 @@ public class AccountTest {
         @Test
         void removeLine_IdsAreStillCountingUpAfterALineIsRemoved() {
             String path = ".\\src\\test\\resources\\testRemoveLine.csv";
-            ArrayList<String> givenLine = getTestLine();
+            List<String> givenLine = getTestLine();
             try {
                 Account account = new Account(path, true);
                 account.addLine(givenLine);
@@ -227,8 +254,8 @@ public class AccountTest {
         @Test
         void removeLastLine_LastLineOfTheTableIsRemoved() {
             String path = ".\\src\\test\\resources\\testRemoveLine.csv";
-            ArrayList<String> givenLine = getTestLine();
-            ArrayList<String> expectedLine = getExpectedLine();
+            List<String> givenLine = getTestLine();
+            List<String> expectedLine = getExpectedLine();
             expectedLine.set(0, "3");
             try {
                 Account account = new Account(path, true);
@@ -241,32 +268,6 @@ public class AccountTest {
                 e.printStackTrace();
             }
         }
-    }
-
-    private ArrayList<String> getHeader() {
-        ArrayList<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        return header;
-    }
-
-    private ArrayList<String> getTestLine() {
-        ArrayList<String> givenLine = new ArrayList<>();
-        givenLine.add("220102");
-        givenLine.add("50");
-        givenLine.add("Einkauf");
-        givenLine.add("Wocheneinkauf REWE");
-        return givenLine;
-    }
-
-    private ArrayList<String> getExpectedLine() {
-        ArrayList<String> expectedLine = new ArrayList<>();
-        expectedLine.add("1");
-        expectedLine.addAll(getTestLine());
-        return expectedLine;
     }
 }
 

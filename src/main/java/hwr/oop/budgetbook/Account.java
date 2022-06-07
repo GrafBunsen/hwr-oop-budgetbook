@@ -3,10 +3,11 @@ package hwr.oop.budgetbook;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Account {
     private final String path;
-    private final ArrayList<ArrayList<String>> table;
+    private final List<List<String>> table;
 
     Account(String path, boolean override) throws IOException {
         boolean doesExist = new File(path).exists();
@@ -18,7 +19,7 @@ public class Account {
             table = readCsvFile(path);
         } else {
             table = new ArrayList<>();
-            ArrayList<String> header = createHeader();
+            List<String> header = createHeader();
             table.add(header);
         }
     }
@@ -27,18 +28,18 @@ public class Account {
         this(path, false);
     }
 
-    public ArrayList<ArrayList<String>> getTable() {
+    public List<List<String>> getTable() {
         return table;
     }
 
-    public void addLine(ArrayList<String> line) {
+    public void addLine(List<String> line) {
         String id = String.valueOf(table.size());
         addLine(Integer.parseInt(id), line);
     }
 
-    public void addLine(int id, ArrayList<String> line) {
+    public void addLine(int id, List<String> line) {
         if (line.size() == (table.get(0).size() - 1)) {
-            ArrayList<String> newLine = new ArrayList<>();
+            List<String> newLine = new ArrayList<>();
             newLine.add(String.valueOf(id));
             newLine.addAll(line);
             table.add(id, newLine);
@@ -61,8 +62,8 @@ public class Account {
         removeLine(table.size() - 1);
     }
 
-    private ArrayList<String> createHeader() {
-        ArrayList<String> header = new ArrayList<>();
+    private List<String> createHeader() {
+        List<String> header = new ArrayList<>();
         header.add("ID");
         header.add("Datum");
         header.add("Betrag");
@@ -71,13 +72,13 @@ public class Account {
         return header;
     }
 
-    private ArrayList<ArrayList<String>> readCsvFile(String pathToCsv) throws IOException {
+    private List<List<String>> readCsvFile(String pathToCsv) throws IOException {
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
         String row;
-        ArrayList<ArrayList<String>> table = new ArrayList<>();
+        List<List<String>> table = new ArrayList<>();
         while ((row = csvReader.readLine()) != null) {
             String[] lineAsString = row.split(",");
-            ArrayList<String> lineAsList = new ArrayList<>();
+            List<String> lineAsList = new ArrayList<>();
             Collections.addAll(lineAsList, lineAsString);
             table.add(lineAsList);
         }
@@ -88,7 +89,7 @@ public class Account {
     public void saveTable() throws IOException {
         FileWriter csvWriter = new FileWriter(path);
 
-        for (ArrayList<String> strings : table) {
+        for (List<String> strings : table) {
             for (String string : strings) {
                 csvWriter.append(string).append(",");
             }
