@@ -9,7 +9,7 @@ public class Account {
     private final String path;
     private final List<List<String>> table;
 
-    Account(String path, boolean override) throws IOException {
+    Account(String path, boolean override) {
         boolean doesExist = new File(path).exists();
         boolean append = doesExist & !override;
 
@@ -24,7 +24,7 @@ public class Account {
         }
     }
 
-    Account(String path) throws IOException {
+    Account(String path) {
         this(path, false);
     }
 
@@ -44,7 +44,7 @@ public class Account {
             newLine.addAll(line);
             table.add(id, newLine);
         } else {
-            throw new RuntimeException("Invalid Line");
+            throw new InvalidLineException("Tried adding an invalid Line");
         }
         for (int i = id + 1; i < table.size(); i++) {
             table.get(i).set(0, String.valueOf(i));
@@ -72,8 +72,15 @@ public class Account {
         return header;
     }
 
-    private List<List<String>> readCsvFile(String pathToCsv) throws IOException {
-        BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
+    private List<List<String>> readCsvFile(String pathToCsv) {
+        try (BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv))) {
+            return readerGetsTable(csvReader);
+        } catch (IOException e) {
+            throw new ReadCsvFileFailedException("Could not read File");
+        }
+    }
+
+    private List<List<String>> readerGetsTable(BufferedReader csvReader) throws IOException {
         String row;
         List<List<String>> table = new ArrayList<>();
         while ((row = csvReader.readLine()) != null) {
@@ -82,13 +89,18 @@ public class Account {
             Collections.addAll(lineAsList, lineAsString);
             table.add(lineAsList);
         }
-        csvReader.close();
         return table;
     }
 
-    public void saveTable() throws IOException {
-        FileWriter csvWriter = new FileWriter(path);
+    public void saveTable() {
+        try (FileWriter csvWriter = new FileWriter(path)) {
+            writerSavesTable(csvWriter);
+        } catch (IOException e) {
+            throw new SaveTableFailedException("Could not write File");
+        }
+    }
 
+    private void writerSavesTable(FileWriter csvWriter) throws IOException {
         for (List<String> strings : table) {
             for (String string : strings) {
                 csvWriter.append(string).append(",");
@@ -96,6 +108,5 @@ public class Account {
             csvWriter.append("\n");
         }
         csvWriter.flush();
-        csvWriter.close();
     }
 }
