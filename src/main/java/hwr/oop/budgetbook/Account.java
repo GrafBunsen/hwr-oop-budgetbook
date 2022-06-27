@@ -1,31 +1,19 @@
 package hwr.oop.budgetbook;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Account {
     private final String path;
     private final List<List<String>> table;
 
-    Account(String path, boolean override) {
-        boolean doesExist = new File(path).exists();
-        boolean append = doesExist & !override;
-
+    Account(String path, List<List<String>> table) {
+        this.table = table;
         this.path = path;
-
-        if (append) {
-            table = readCsvFile(path);
-        } else {
-            table = new ArrayList<>();
-            List<String> header = createHeader();
-            table.add(header);
-        }
     }
 
     Account(String path) {
-        this(path, false);
+        this(path, createEmptyTable());
     }
 
     public List<List<String>> getTable() {
@@ -62,51 +50,19 @@ public class Account {
         removeLine(table.size() - 1);
     }
 
-    private List<String> createHeader() {
+    private static List<List<String>> createEmptyTable() {
         List<String> header = new ArrayList<>();
         header.add("ID");
         header.add("Datum");
         header.add("Betrag");
         header.add("Kategorie");
         header.add("Beschreibung");
-        return header;
-    }
-
-    private List<List<String>> readCsvFile(String pathToCsv) {
-        try (BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv))) {
-            return readerGetsTable(csvReader);
-        } catch (IOException e) {
-            throw new ReadCsvFileFailedException("Could not read File");
-        }
-    }
-
-    private List<List<String>> readerGetsTable(BufferedReader csvReader) throws IOException {
-        String row;
         List<List<String>> table = new ArrayList<>();
-        while ((row = csvReader.readLine()) != null) {
-            String[] lineAsString = row.split(",");
-            List<String> lineAsList = new ArrayList<>();
-            Collections.addAll(lineAsList, lineAsString);
-            table.add(lineAsList);
-        }
+        table.add(header);
         return table;
     }
 
-    public void saveTable() {
-        try (FileWriter csvWriter = new FileWriter(path)) {
-            writerSavesTable(csvWriter);
-        } catch (IOException e) {
-            throw new SaveTableFailedException("Could not write File");
-        }
-    }
-
-    private void writerSavesTable(FileWriter csvWriter) throws IOException {
-        for (List<String> strings : table) {
-            for (String string : strings) {
-                csvWriter.append(string).append(",");
-            }
-            csvWriter.append("\n");
-        }
-        csvWriter.flush();
+    public String getPath() {
+        return path;
     }
 }
