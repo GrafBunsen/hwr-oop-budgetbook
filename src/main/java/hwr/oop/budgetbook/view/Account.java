@@ -1,4 +1,6 @@
-package hwr.oop.budgetbook;
+package hwr.oop.budgetbook.view;
+
+import hwr.oop.budgetbook.exceptions.InvalidLineException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ public class Account {
         this.path = path;
     }
 
-    Account(String path) {
+    public Account(String path) {
         this(path, createEmptyTable());
     }
 

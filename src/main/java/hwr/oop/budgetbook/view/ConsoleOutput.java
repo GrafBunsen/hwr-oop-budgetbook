@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook;
+package hwr.oop.budgetbook.view;
 
 import java.util.List;
 
