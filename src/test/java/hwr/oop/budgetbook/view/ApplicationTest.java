@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook;
+package hwr.oop.budgetbook.view;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
