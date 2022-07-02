@@ -37,46 +37,23 @@ public class AccountTest {
         return expectedLine;
     }
 
+    @Test
+    void getPath_DoesReturnSpecifiedPath() {
+        String path = "./src/test/resources/testPath.csv";
+        Account account = new Account(path);
+        assertThat(account.getPath()).isEqualTo(path);
+    }
+
     @Nested
     class ConstructorTest {
         @Test
-        void Account_constructorReadsExistingTable() {
-            String path = "./src/test/resources/testConstructor.csv";
-
-            Account account = new Account(path);
+        void Account_TableIsCreatedEmpty() {
+            String path = "./src/test/resources/testPersistence.csv";
             List<List<String>> expectedTable = new ArrayList<>();
             List<String> line1 = getHeader();
-            List<String> line2 = getExpectedLine();
-
             expectedTable.add(line1);
-            expectedTable.add(line2);
-
-            assertThat(account.getTable()).isEqualTo(expectedTable);
-        }
-
-        @Test
-        void Account_TableIsAppendedOrCreatedEmpty() {
-            String path = "./src/test/resources/testConstructor.csv";
-            List<List<String>> expectedTableAppend = new ArrayList<>();
-            List<List<String>> expectedTableOverride = new ArrayList<>();
-            List<String> line1 = getHeader();
-            List<String> line2 = getExpectedLine();
-            expectedTableAppend.add(line1);
-            expectedTableAppend.add(line2);
-            expectedTableOverride.add(line1);
-
-
-            Account appendedAccount = new Account(path, false);
-            assertThat(appendedAccount.getTable()).isEqualTo(expectedTableAppend);
-            Account overrideAccount = new Account(path, true);
-
-            assertThat(overrideAccount.getTable()).isEqualTo(expectedTableOverride);
-        }
-
-        @Test
-        void Account_TableIsNotRead() {
-            //can't be tested
-
+            Account overrideAccount = new Account(path);
+            assertThat(overrideAccount.getTable()).isEqualTo(expectedTable);
         }
     }
 
@@ -93,8 +70,9 @@ public class AccountTest {
             expectedLine.add("Einkauf");
             expectedLine.add("Wocheneinkauf REWE");
             String path = "./src/test/resources/testAddLine.csv";
+            List<List<String>> table = AccountPersistence.readCsvFile(path);
 
-            Account account = new Account(path);
+            Account account = new Account(path, table);
 
             account.addLine(givenLine);
             assertThat(account.getTable()).contains(expectedLine);
@@ -155,7 +133,7 @@ public class AccountTest {
             List<String> differentLine = getTestLine();
             differentLine.set(2, "99");
             List<String> expectedLine = getExpectedLine();
-            Account account = new Account(path, true);
+            Account account = new Account(path);
             account.addLine(differentLine);
             account.addLine(differentLine);
             account.addLine(differentLine);
@@ -167,7 +145,7 @@ public class AccountTest {
         void addLine_IdsAreStillCountingUpAfterALineIsAddedAtASpecifiedID() {
             String path = "./src/test/resources/testInsertLine.csv";
             List<String> givenLine = getTestLine();
-            Account account = new Account(path, true);
+            Account account = new Account(path);
 
             account.addLine(givenLine);
             account.addLine(givenLine);
@@ -182,53 +160,13 @@ public class AccountTest {
     }
 
     @Nested
-    class SaveTableTest {
-
-        @Test
-        void saveTable_ifALineIsAddedAndTheFileIsSavedItIsPartOfTheTableAfterReadingAgain() {
-            List<String> givenLine = getTestLine();
-            String path = "./src/test/resources/testSaveTable.csv";
-
-            Account account = new Account(path, true);
-
-            account.addLine(givenLine);
-            account.saveTable();
-
-            List<List<String>> savedTable = account.getTable();
-            Account newAccount = new Account(path);
-
-            List<List<String>> loadedTable = newAccount.getTable();
-            assertThat(savedTable).isEqualTo(loadedTable);
-        }
-
-        @Test
-        void saveTable_aRuntimeExceptionIsThrownWhenSavingIsNotPossible() {
-            String path = "./src/test/resources/testSaveTableNotPossible.csv"; //this file has to be read-only
-            Account account = new Account(path);
-            Throwable thrown = catchThrowable(account);
-            assertThat(thrown).isInstanceOf(SaveTableFailedException.class).hasMessageContaining("Could not write File");
-        }
-
-        private Throwable catchThrowable(Account account) {
-            Throwable thrown = null;
-            try {
-                account.saveTable();
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-                thrown = e;
-            }
-            return thrown;
-        }
-    }
-
-    @Nested
     class RemoveLineTest {
         @Test
         void removeLine_aLineSpecifiedByIdIsRemoved() {
             String path = "./src/test/resources/testRemoveLine.csv";
             List<String> givenLine = getTestLine();
             List<String> expectedLine = getExpectedLine();
-            Account account = new Account(path, true);
+            Account account = new Account(path);
 
             account.addLine(givenLine);
             account.removeLine(1);
@@ -239,7 +177,7 @@ public class AccountTest {
         void removeLine_IdsAreStillCountingUpAfterALineIsRemoved() {
             String path = "./src/test/resources/testRemoveLine.csv";
             List<String> givenLine = getTestLine();
-            Account account = new Account(path, true);
+            Account account = new Account(path);
 
             account.addLine(givenLine);
             account.addLine(givenLine);
@@ -257,7 +195,7 @@ public class AccountTest {
             List<String> givenLine = getTestLine();
             List<String> expectedLine = getExpectedLine();
             expectedLine.set(0, "3");
-            Account account = new Account(path, true);
+            Account account = new Account(path);
 
             account.addLine(givenLine);
             account.addLine(givenLine);

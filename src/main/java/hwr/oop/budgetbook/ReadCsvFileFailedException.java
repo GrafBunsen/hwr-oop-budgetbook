@@ -5,5 +5,4 @@ public class ReadCsvFileFailedException extends RuntimeException {
         super(errorMessage);
     }
 
-
 }
