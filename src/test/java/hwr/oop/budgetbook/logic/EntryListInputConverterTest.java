@@ -30,7 +30,7 @@ public class EntryListInputConverterTest {
         listOfStringLists.add(line);
 
         EntryListConverter converter = new EntryListConverter();
-        HashMap<Integer, Entry> convertedList = converter.convertFromFileLines(listOfStringLists);
+        HashMap<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
 
         Assertions.assertThat(convertedList.get(1)).isNotNull();
     }
@@ -49,7 +49,7 @@ public class EntryListInputConverterTest {
         listOfStringLists.add(line);
 
         EntryListConverter converter = new EntryListConverter();
-        HashMap<Integer, Entry> convertedList = converter.convertFromFileLines(listOfStringLists);
+        HashMap<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
 
         Entry entryFromConvertedList = convertedList.get(1);
 

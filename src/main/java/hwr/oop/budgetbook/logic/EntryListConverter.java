@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class EntryListConverter {
-    public HashMap<Integer, Entry> convertFromFileLines(List<List<String>> fileLines) {
+    public HashMap<Integer, Entry> convertLines(List<List<String>> fileLines) {
         HashMap<Integer, Entry> convertedList = new HashMap<>();
 
         fileLines.forEach((List<String> line) -> {
