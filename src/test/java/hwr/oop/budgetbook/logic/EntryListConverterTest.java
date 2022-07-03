@@ -59,4 +59,25 @@ public class EntryListConverterTest {
         Assertions.assertThat(entryFromConvertedList.getCategory()).isEqualTo("Weihnachtsgeld");
         Assertions.assertThat(entryFromConvertedList.getDescription()).isEqualTo("Peters Geschenk");
     }
+
+    @Test
+    public void test_converterConvertsAHashmap_returnsAListOfListOfStrings() {
+        List<List<String>> listOfStringLists = new ArrayList<>();
+
+        List<String> line = new ArrayList<>();
+        line.add("1");
+        line.add("220124");
+        line.add("300");
+        line.add("Weihnachtsgeld");
+        line.add("Peters Geschenk");
+
+        listOfStringLists.add(line);
+
+        EntryListConverter converter = new EntryListConverter();
+        HashMap<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
+
+        List<List<String>> convertedListOfStringLists = converter.convertEntries(convertedList);
+
+        Assertions.assertThat(listOfStringLists).isEqualTo(convertedListOfStringLists);
+    }
 }
