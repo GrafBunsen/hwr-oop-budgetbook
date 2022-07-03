@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntryListInputConverterTest {
+public class EntryListConverterTest {
     @Test
     public void test_instanciation() {
         EntryListConverter converter = new EntryListConverter();
