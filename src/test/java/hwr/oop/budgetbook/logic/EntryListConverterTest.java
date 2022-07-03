@@ -11,13 +11,13 @@ import java.util.List;
 
 public class EntryListConverterTest {
     @Test
-    public void test_instanciation() {
+    public void construct_canInstantiate_True() {
         EntryListConverter converter = new EntryListConverter();
         Assertions.assertThat(converter).isInstanceOf(EntryListConverter.class);
     }
 
     @Test
-    public void test_converterConvertsOneEntry_isNotNull() {
+    public void convertLines_convertsListToHashMap_FirstItemIsNotNull() {
         List<List<String>> listOfStringLists = new ArrayList<>();
 
         List<String> line = new ArrayList<>();
@@ -36,7 +36,7 @@ public class EntryListConverterTest {
     }
 
     @Test
-    public void test_converterConvertsOneEntry_thatTheOneEntryHasTheSameAttributes() {
+    public void convertLines_convertsSameValuesToHashMap_FirstItemValuesAreEqual_True() {
         List<List<String>> listOfStringLists = new ArrayList<>();
 
         List<String> line = new ArrayList<>();
@@ -61,7 +61,7 @@ public class EntryListConverterTest {
     }
 
     @Test
-    public void test_converterConvertsAHashmap_returnsAListOfListOfStrings() {
+    public void convertEntries_converterConvertsWithoutLoss_True() {
         List<List<String>> listOfStringLists = new ArrayList<>();
 
         List<String> line = new ArrayList<>();
