@@ -67,4 +67,12 @@ public class Account {
     public String getPath() {
         return path;
     }
+
+    public int sumOverAllEntries() {
+        int sum = 0;
+        for (int i = 1; i < table.size(); i++) {
+            sum = sum + Integer.parseInt(table.get(i).get(2));
+        }
+        return sum;
+    }
 }
