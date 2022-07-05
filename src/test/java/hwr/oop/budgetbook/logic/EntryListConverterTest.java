@@ -6,8 +6,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EntryListConverterTest {
     @Test
@@ -30,7 +30,7 @@ public class EntryListConverterTest {
         listOfStringLists.add(line);
 
         EntryListConverter converter = new EntryListConverter();
-        HashMap<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
+        Map<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
 
         Assertions.assertThat(convertedList.get(1)).isNotNull();
     }
@@ -49,7 +49,7 @@ public class EntryListConverterTest {
         listOfStringLists.add(line);
 
         EntryListConverter converter = new EntryListConverter();
-        HashMap<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
+        Map<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
 
         Entry entryFromConvertedList = convertedList.get(1);
 
@@ -74,7 +74,7 @@ public class EntryListConverterTest {
         listOfStringLists.add(line);
 
         EntryListConverter converter = new EntryListConverter();
-        HashMap<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
+        Map<Integer, Entry> convertedList = converter.convertLines(listOfStringLists);
 
         List<List<String>> convertedListOfStringLists = converter.convertEntries(convertedList);
 

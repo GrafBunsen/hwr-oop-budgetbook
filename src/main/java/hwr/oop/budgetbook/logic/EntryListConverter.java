@@ -5,10 +5,11 @@ import hwr.oop.budgetbook.models.Entry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EntryListConverter {
-    public HashMap<Integer, Entry> convertLines(List<List<String>> fileLines) {
-        HashMap<Integer, Entry> convertedList = new HashMap<>();
+    public Map<Integer, Entry> convertLines(List<List<String>> fileLines) {
+        Map<Integer, Entry> convertedList = new HashMap<>();
 
         fileLines.forEach((List<String> line) -> {
             convertedList.put(Integer.parseInt(line.get(0)), this.convertToEntry(line));
@@ -24,7 +25,7 @@ public class EntryListConverter {
         );
     }
 
-    public List<List<String>> convertEntries(HashMap<Integer, Entry> entryList) {
+    public List<List<String>> convertEntries(Map<Integer, Entry> entryList) {
         List<List<String>> convertedList = new ArrayList<>();
 
         entryList.forEach((id, entry) -> {

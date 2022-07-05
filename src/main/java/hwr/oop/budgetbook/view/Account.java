@@ -1,67 +1,54 @@
 package hwr.oop.budgetbook.view;
 
-import hwr.oop.budgetbook.exceptions.InvalidLineException;
+import hwr.oop.budgetbook.models.Entry;
+import hwr.oop.budgetbook.models.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Account {
     private final String path;
-    private final List<List<String>> table;
+    private final Map<Integer, Entry> table;
 
-    Account(String path, List<List<String>> table) {
+    Account(String path, Map<Integer, Entry> table) {
         this.table = table;
         this.path = path;
     }
 
     public Account(String path) {
-        this(path, createEmptyTable());
+        this(path, new HashMap<>());
     }
 
-    private static List<List<String>> createEmptyTable() {
-        List<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        List<List<String>> table = new ArrayList<>();
-        table.add(header);
+    public Map<Integer, Entry> getTable() {
         return table;
     }
 
-    public List<List<String>> getTable() {
-        return table;
+    public void addEntry(Transaction transaction) {
+        int id = getHighestId() + 1;
+        addEntry(id, transaction);
     }
 
-    public void addLine(List<String> line) {
-        String id = String.valueOf(table.size());
-        addLine(Integer.parseInt(id), line);
-    }
-
-    public void addLine(int id, List<String> line) {
-        if (line.size() == (table.get(0).size() - 1)) {
-            List<String> newLine = new ArrayList<>();
-            newLine.add(String.valueOf(id));
-            newLine.addAll(line);
-            table.add(id, newLine);
-        } else {
-            throw new InvalidLineException("Tried adding an invalid Line");
+    private int getHighestId() {
+        int highestKey = 0;
+        for (int key : table.keySet()) {
+            if (key > highestKey) {
+                highestKey = key;
+            }
         }
-        for (int i = id + 1; i < table.size(); i++) {
-            table.get(i).set(0, String.valueOf(i));
-        }
+        return highestKey;
     }
 
-    public void removeLine(int id) {
+    private void addEntry(int id, Transaction transaction) {
+        Entry entry = new Entry(id, transaction.getDate(), transaction.getAmount(), transaction.getCategory(), transaction.getDescription());
+        table.put(id, entry);
+    }
+
+    public void removeEntry(int id) {
         table.remove(id);
-        for (int i = id; i < table.size(); i++) {
-            table.get(i).set(0, String.valueOf(i));
-        }
     }
 
-    public void removeLastLine() {
-        removeLine(table.size() - 1);
+    public void removeLastEntry() {
+        removeEntry(table.size());
     }
 
     public String getPath() {
@@ -70,8 +57,8 @@ public class Account {
 
     public int sumOverAllEntries() {
         int sum = 0;
-        for (int i = 1; i < table.size(); i++) {
-            sum += Integer.parseInt(table.get(i).get(2));
+        for (int key : table.keySet()) {
+            sum += table.get(key).getAmount();
         }
         return sum;
     }

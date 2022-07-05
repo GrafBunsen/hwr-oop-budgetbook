@@ -1,27 +1,28 @@
 package hwr.oop.budgetbook.logic;
 
+import hwr.oop.budgetbook.models.Entry;
+import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.view.Account;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class Income {
 
     Account balance;
 
-    public void addTransaction(List<String> entry) {
+    public void addTransaction(Transaction transaction) {
         if (balance == null) {
             balance = new Account("balance");
         }
 
-        List<String> incomeEntry = new ArrayList<>(entry);
-        int amount = Integer.parseInt(entry.get(1)) * -1;
-        incomeEntry.set(1, Integer.toString(amount));
+        Transaction incomeTransaction = new Transaction(transaction);
+        int amount = transaction.getAmount() * -1;
+        incomeTransaction.setAmount(amount);
 
-        balance.addLine(incomeEntry);
+        balance.addEntry(incomeTransaction);
     }
 
-    public List<List<String>> getTable() {
+    public Map<Integer, Entry> getTable() {
         return balance.getTable();
     }
 

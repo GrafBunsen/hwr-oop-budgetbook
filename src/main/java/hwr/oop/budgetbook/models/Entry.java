@@ -1,18 +1,24 @@
 package hwr.oop.budgetbook.models;
 
+import java.util.Objects;
+
 public class Entry {
-    int id;
-    int date;
-    int amount;
-    String category;
-    String description;
+    private int id;
+    private int date;
+    private int amount;
+    private String category;
+    private String description;
 
     public Entry(int newId, int newDate, int newAmount, String newCategory, String newDescription) {
         id = newId;
-        date =  newDate;
+        date = newDate;
         amount = newAmount;
         category = newCategory;
         description = newDescription;
+    }
+
+    public Entry(int id, Transaction transaction) {
+        this(id, transaction.getDate(), transaction.getAmount(), transaction.getCategory(), transaction.getDescription());
     }
 
     public int getId() {
@@ -54,4 +60,26 @@ public class Entry {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        // self check
+        if (this == o)
+            return true;
+        // null check
+        if (o == null)
+            return false;
+        // type check and cast
+        if (getClass() != o.getClass())
+            return false;
+        Entry entry = (Entry) o;
+        // field comparison
+        return Objects.equals(id, entry.id)
+                && Objects.equals(date, entry.date)
+                && Objects.equals(amount, entry.amount)
+                && Objects.equals(category, entry.category)
+                && Objects.equals(description, entry.description);
+    }
+
+
 }
