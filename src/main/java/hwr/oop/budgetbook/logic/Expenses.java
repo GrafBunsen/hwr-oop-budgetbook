@@ -1,5 +1,6 @@
 package hwr.oop.budgetbook.logic;
 
+import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.view.Account;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ public class Expenses {
         accounts = new ArrayList<>();
     }
 
-    public void addTransaction(List<String> entry) {
-        String category = entry.get(2);
+    public void addTransaction(Transaction transaction) {
+        String category = transaction.getCategory();
 
         boolean categoryAccountExists = false;
         int categoryAccountIndex = -1;
@@ -31,8 +32,7 @@ public class Expenses {
             expensesAccount = new Account(category);
         }
 
-        List<String> expensesEntry = new ArrayList<>(entry);
-        expensesAccount.addLine(expensesEntry);
+        expensesAccount.addEntry(transaction);
 
         if (categoryAccountExists) {
             accounts.set(categoryAccountIndex, expensesAccount);

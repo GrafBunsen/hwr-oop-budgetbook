@@ -1,67 +1,50 @@
 package hwr.oop.budgetbook.view;
 
-import hwr.oop.budgetbook.exceptions.InvalidLineException;
+import hwr.oop.budgetbook.models.Entry;
+import hwr.oop.budgetbook.models.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Account {
     private final String path;
-    private final List<List<String>> table;
+    private final List<Entry> table;
 
-    Account(String path, List<List<String>> table) {
+    Account(String path, List<Entry> table) {
         this.table = table;
         this.path = path;
     }
 
     public Account(String path) {
-        this(path, createEmptyTable());
+        this(path,new ArrayList<>());
     }
 
-    private static List<List<String>> createEmptyTable() {
-        List<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        List<List<String>> table = new ArrayList<>();
-        table.add(header);
+    public List<Entry> getTable() {
         return table;
     }
 
-    public List<List<String>> getTable() {
-        return table;
+    public void addEntry(Transaction transaction) {
+        String id = String.valueOf(table.size()+1);
+        addEntry(Integer.parseInt(id), transaction);
     }
 
-    public void addLine(List<String> line) {
-        String id = String.valueOf(table.size());
-        addLine(Integer.parseInt(id), line);
-    }
-
-    public void addLine(int id, List<String> line) {
-        if (line.size() == (table.get(0).size() - 1)) {
-            List<String> newLine = new ArrayList<>();
-            newLine.add(String.valueOf(id));
-            newLine.addAll(line);
-            table.add(id, newLine);
-        } else {
-            throw new InvalidLineException("Tried adding an invalid Line");
-        }
-        for (int i = id + 1; i < table.size(); i++) {
-            table.get(i).set(0, String.valueOf(i));
+    public void addEntry(int id, Transaction transaction) {
+        Entry entry = new Entry(id,transaction.getDate(),transaction.getAmount(),transaction.getCategory(),transaction.getDescription());
+        table.add(id-1,entry);
+        for (int i = id -1; i < table.size(); i++) {
+            table.get(i).setId(i+1);
         }
     }
 
-    public void removeLine(int id) {
-        table.remove(id);
-        for (int i = id; i < table.size(); i++) {
-            table.get(i).set(0, String.valueOf(i));
+    public void removeEntry(int id) {
+        table.remove(id-1);
+        for (int i = id-1; i < table.size(); i++) {
+            table.get(i).setId(i+1);
         }
     }
 
-    public void removeLastLine() {
-        removeLine(table.size() - 1);
+    public void removeLastEntry() {
+        removeEntry(table.size() - 1);
     }
 
     public String getPath() {
@@ -70,8 +53,8 @@ public class Account {
 
     public int sumOverAllEntries() {
         int sum = 0;
-        for (int i = 1; i < table.size(); i++) {
-            sum += Integer.parseInt(table.get(i).get(2));
+        for (Entry entry : table) {
+            sum += entry.getAmount();
         }
         return sum;
     }

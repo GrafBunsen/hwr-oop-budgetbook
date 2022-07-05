@@ -1,5 +1,6 @@
 package hwr.oop.budgetbook.logic;
 
+import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.view.Account;
 
 import java.util.List;
@@ -13,9 +14,9 @@ public class DoubleEntryBookkeepingAccount {
         expenses = new Expenses();
     }
 
-    public void addTransaction(List<String> entry) {
-        expenses.addTransaction(entry);
-        income.addTransaction(entry);
+    public void addTransaction(Transaction transaction) {
+        expenses.addTransaction(transaction);
+        income.addTransaction(transaction);
     }
 
     public Expenses getExpenses() {
