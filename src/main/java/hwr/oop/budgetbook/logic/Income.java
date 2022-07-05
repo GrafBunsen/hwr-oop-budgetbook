@@ -8,6 +8,7 @@ import java.util.List;
 public class Income {
 
     Account balance;
+
     public void addTransaction(List<String> entry) {
         if (balance == null) {
             balance = new Account("balance");

@@ -2,7 +2,6 @@ package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.view.Account;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DoubleEntryBookkeepingAccount {
@@ -32,10 +31,10 @@ public class DoubleEntryBookkeepingAccount {
     }
 
     public boolean isVerified() {
-        int sumOfExpenses=expenses.calculateSumOfExpenses();
-        int sumOfIncome=income.calculateSumOfIncome();
+        int sumOfExpenses = expenses.calculateSumOfExpenses();
+        int sumOfIncome = income.calculateSumOfIncome();
 
-        int sum = sumOfIncome+sumOfExpenses;
+        int sum = sumOfIncome + sumOfExpenses;
         return sum == 0;
     }
 }

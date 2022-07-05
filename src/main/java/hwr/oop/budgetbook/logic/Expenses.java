@@ -8,11 +8,11 @@ import java.util.List;
 public class Expenses {
     List<Account> accounts;
 
-    public Expenses(){
+    public Expenses() {
         accounts = new ArrayList<>();
     }
 
-    public void addTransaction(List<String>entry){
+    public void addTransaction(List<String> entry) {
         String category = entry.get(2);
 
         boolean categoryAccountExists = false;
@@ -41,7 +41,7 @@ public class Expenses {
         }
     }
 
-    public List<Account> getAccounts(){
+    public List<Account> getAccounts() {
         return accounts;
     }
 
