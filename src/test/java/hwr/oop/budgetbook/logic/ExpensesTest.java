@@ -4,14 +4,12 @@ import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.view.Account;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class ExpensesTest {
     @Test
-    public void getAccounts_unknownCategoryGiven_returnNull(){
+    public void getAccounts_unknownCategoryGiven_returnNull() {
         Expenses expenses = new Expenses();
         Transaction testTransaction = getTestTransaction();
         expenses.addTransaction(testTransaction);
@@ -20,7 +18,8 @@ public class ExpensesTest {
 
         assertThat(categoryAccount).isEqualTo(null);
     }
+
     private Transaction getTestTransaction() {
-        return new Transaction(220102,50,"Einkauf","Wocheneinkauf REWE");
+        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
     }
 }

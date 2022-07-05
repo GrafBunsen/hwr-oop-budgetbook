@@ -4,8 +4,7 @@ import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.view.Account;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class Income {
 
@@ -23,7 +22,7 @@ public class Income {
         balance.addEntry(incomeTransaction);
     }
 
-    public List<Entry> getTable() {
+    public Map<Integer, Entry> getTable() {
         return balance.getTable();
     }
 

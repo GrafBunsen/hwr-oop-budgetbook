@@ -11,14 +11,14 @@ public class Entry {
 
     public Entry(int newId, int newDate, int newAmount, String newCategory, String newDescription) {
         id = newId;
-        date =  newDate;
+        date = newDate;
         amount = newAmount;
         category = newCategory;
         description = newDescription;
     }
 
-    public Entry(int id, Transaction transaction){
-        this(id,transaction.getDate(),transaction.getAmount(),transaction.getCategory(), transaction.getDescription());
+    public Entry(int id, Transaction transaction) {
+        this(id, transaction.getDate(), transaction.getAmount(), transaction.getCategory(), transaction.getDescription());
     }
 
     public int getId() {

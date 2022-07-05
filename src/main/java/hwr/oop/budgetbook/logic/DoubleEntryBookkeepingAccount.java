@@ -3,8 +3,6 @@ package hwr.oop.budgetbook.logic;
 import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.view.Account;
 
-import java.util.List;
-
 public class DoubleEntryBookkeepingAccount {
     private final Income income;
     private final Expenses expenses;
@@ -17,10 +15,6 @@ public class DoubleEntryBookkeepingAccount {
     public void addTransaction(Transaction transaction) {
         expenses.addTransaction(transaction);
         income.addTransaction(transaction);
-    }
-
-    public Expenses getExpenses() {
-        return expenses;
     }
 
     public Income getIncome() {

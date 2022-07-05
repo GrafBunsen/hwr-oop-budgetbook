@@ -3,48 +3,52 @@ package hwr.oop.budgetbook.view;
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Account {
     private final String path;
-    private final List<Entry> table;
+    private final Map<Integer, Entry> table;
 
-    Account(String path, List<Entry> table) {
+    Account(String path, Map<Integer, Entry> table) {
         this.table = table;
         this.path = path;
     }
 
     public Account(String path) {
-        this(path,new ArrayList<>());
+        this(path, new HashMap<>());
     }
 
-    public List<Entry> getTable() {
+    public Map<Integer, Entry> getTable() {
         return table;
     }
 
     public void addEntry(Transaction transaction) {
-        String id = String.valueOf(table.size()+1);
-        addEntry(Integer.parseInt(id), transaction);
+        int id = getHighestId() + 1;
+        addEntry(id, transaction);
     }
 
-    public void addEntry(int id, Transaction transaction) {
-        Entry entry = new Entry(id,transaction.getDate(),transaction.getAmount(),transaction.getCategory(),transaction.getDescription());
-        table.add(id-1,entry);
-        for (int i = id -1; i < table.size(); i++) {
-            table.get(i).setId(i+1);
+    private int getHighestId() {
+        int highestKey = 0;
+        for (int key : table.keySet()) {
+            if (key > highestKey) {
+                highestKey = key;
+            }
         }
+        return highestKey;
+    }
+
+    private void addEntry(int id, Transaction transaction) {
+        Entry entry = new Entry(id, transaction.getDate(), transaction.getAmount(), transaction.getCategory(), transaction.getDescription());
+        table.put(id, entry);
     }
 
     public void removeEntry(int id) {
-        table.remove(id-1);
-        for (int i = id-1; i < table.size(); i++) {
-            table.get(i).setId(i+1);
-        }
+        table.remove(id);
     }
 
     public void removeLastEntry() {
-        removeEntry(table.size() - 1);
+        removeEntry(table.size());
     }
 
     public String getPath() {
@@ -53,8 +57,8 @@ public class Account {
 
     public int sumOverAllEntries() {
         int sum = 0;
-        for (Entry entry : table) {
-            sum += entry.getAmount();
+        for (int key : table.keySet()) {
+            sum += table.get(key).getAmount();
         }
         return sum;
     }
