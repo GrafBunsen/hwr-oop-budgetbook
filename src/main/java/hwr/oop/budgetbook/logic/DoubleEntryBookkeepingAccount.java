@@ -6,89 +6,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoubleEntryBookkeepingAccount {
-    private final List<Account> income;
-    private final List<Account> expenses;
+    private final Income income;
+    private final Expenses expenses;
 
     DoubleEntryBookkeepingAccount() {
-        income = new ArrayList<>();
-        expenses = new ArrayList<>();
+        income = new Income();
+        expenses = new Expenses();
     }
 
     public void addTransaction(List<String> entry) {
-        String category = entry.get(2);
-
-        boolean categoryAccountExists = false;
-        int categoryAccountIndex = -1;
-        for (int i = 0; i < expenses.size(); i++) {
-            if (category.equals(expenses.get(i).getPath())) {
-                categoryAccountExists = true;
-                categoryAccountIndex = i;
-            }
-        }
-
-        Account expensesAccount;
-        if (categoryAccountExists) {
-            expensesAccount = expenses.get(categoryAccountIndex);
-        } else {
-            expensesAccount = new Account(category);
-        }
-
-
-        Account incomeAccount;
-        if (income.isEmpty()) {
-            incomeAccount = new Account("balance");
-        } else {
-            incomeAccount = income.get(0);
-        }
-
-        List<String> expensesEntry = new ArrayList<>(entry);
-        expensesAccount.addLine(expensesEntry);
-        List<String> incomeEntry = new ArrayList<>(entry);
-        int amount = Integer.parseInt(entry.get(1)) * -1;
-        incomeEntry.set(1, Integer.toString(amount));
-        incomeAccount.addLine(incomeEntry);
-
-        if (categoryAccountExists) {
-            expenses.set(categoryAccountIndex, expensesAccount);
-        } else {
-            expenses.add(expensesAccount);
-        }
-
-        if (income.isEmpty()) {
-            income.add(incomeAccount);
-        } else {
-            income.set(0, incomeAccount);
-        }
+        expenses.addTransaction(entry);
+        income.addTransaction(entry);
     }
 
-    public List<Account> getExpenses() {
+    public Expenses getExpenses() {
         return expenses;
     }
 
-    public List<Account> getIncome() {
+    public Income getIncome() {
         return income;
     }
 
-    public Account getCategoryAccount(String category) {
-        for (Account account : expenses) {
-            if (account.getPath().equals(category)) {
-                return account;
-            }
-        }
-        return null;
+    public Account getExpenseCategoryAccount(String category) {
+        return expenses.getCategoryAccount(category);
     }
 
     public boolean isVerified() {
-        int sumOfExpenses=0;
-        int sumOfIncome=0;
-
-        for (Account expens : expenses) {
-            sumOfExpenses = expens.sumOverAllEntries();
-        }
-
-        for (Account account : income) {
-            sumOfIncome += account.sumOverAllEntries();
-        }
+        int sumOfExpenses=expenses.calculateSumOfExpenses();
+        int sumOfIncome=income.calculateSumOfIncome();
 
         int sum = sumOfIncome+sumOfExpenses;
         return sum == 0;

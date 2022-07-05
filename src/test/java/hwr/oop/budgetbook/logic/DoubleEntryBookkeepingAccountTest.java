@@ -27,7 +27,9 @@ public class DoubleEntryBookkeepingAccountTest {
         List<String> expectedOutput = new ArrayList<>(testTransaction);
         expectedOutput.add(0, "1");
 
-        assertThat(expectedOutput).isIn(doubleEntryBookkeepingAccount.getExpenses().get(0).getTable());
+        List<List<String>>tableOfExpenses = doubleEntryBookkeepingAccount.getExpenses().getAccounts().get(0).getTable();
+
+        assertThat(expectedOutput).isIn(tableOfExpenses);
     }
 
     @Test
@@ -40,7 +42,7 @@ public class DoubleEntryBookkeepingAccountTest {
         expectedOutput.add(0, "1");
         expectedOutput.set(2, "-50");
 
-        assertThat(expectedOutput).isIn(doubleEntryBookkeepingAccount.getIncome().get(0).getTable());
+        assertThat(expectedOutput).isIn(doubleEntryBookkeepingAccount.getIncome().getTable());
     }
 
     @Test
@@ -52,7 +54,7 @@ public class DoubleEntryBookkeepingAccountTest {
         List<String> expectedOutput = new ArrayList<>(testTransaction);
         expectedOutput.add(0, "1");
 
-        assertThat(expectedOutput).isIn(doubleEntryBookkeepingAccount.getCategoryAccount("Einkauf").getTable());
+        assertThat(expectedOutput).isIn(doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Einkauf").getTable());
     }
 
     @Test
@@ -73,7 +75,7 @@ public class DoubleEntryBookkeepingAccountTest {
         List<String> expectedSecondLine = new ArrayList<>(differentTestTransactionInSameCategory);
         expectedSecondLine.add(0, "2");
 
-        assertThat(doubleEntryBookkeepingAccount.getCategoryAccount("Einkauf").getTable()).contains(expectedFirstLine).contains(expectedSecondLine);
+        assertThat(doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Einkauf").getTable()).contains(expectedFirstLine).contains(expectedSecondLine);
     }
 
     @Test
@@ -88,7 +90,7 @@ public class DoubleEntryBookkeepingAccountTest {
     @Test
     public void getCategoryAccount_tryingToFindANonexistentCategory_returnsNull(){
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        Account account = doubleEntryBookkeepingAccount.getCategoryAccount("Test");
+        Account account = doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Test");
 
         assertThat(account).isEqualTo(null);
     }
