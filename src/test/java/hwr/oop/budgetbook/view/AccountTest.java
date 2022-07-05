@@ -46,6 +46,18 @@ public class AccountTest {
         assertThat(account.getPath()).isEqualTo(path);
     }
 
+    @Test
+    public void sumOverAllEntries_givesSumOfAllEntries(){
+        String path = "./src/test/resources/testSumOverAllEntries.csv";
+        List<String> givenLine = getTestLine();
+        Account account = new Account(path);
+
+        account.addLine(givenLine);
+        account.addLine(givenLine);
+        account.addLine(givenLine);
+        assertThat(account.sumOverAllEntries()).isEqualTo(150);
+    }
+
     @Nested
     class ConstructorTest {
         @Test

@@ -18,6 +18,18 @@ public class Account {
         this(path, createEmptyTable());
     }
 
+    private static List<List<String>> createEmptyTable() {
+        List<String> header = new ArrayList<>();
+        header.add("ID");
+        header.add("Datum");
+        header.add("Betrag");
+        header.add("Kategorie");
+        header.add("Beschreibung");
+        List<List<String>> table = new ArrayList<>();
+        table.add(header);
+        return table;
+    }
+
     public List<List<String>> getTable() {
         return table;
     }
@@ -52,19 +64,15 @@ public class Account {
         removeLine(table.size() - 1);
     }
 
-    private static List<List<String>> createEmptyTable() {
-        List<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        List<List<String>> table = new ArrayList<>();
-        table.add(header);
-        return table;
-    }
-
     public String getPath() {
         return path;
+    }
+
+    public int sumOverAllEntries() {
+        int sum = 0;
+        for (int i = 1; i < table.size(); i++) {
+            sum += Integer.parseInt(table.get(i).get(2));
+        }
+        return sum;
     }
 }
