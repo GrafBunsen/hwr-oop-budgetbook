@@ -9,7 +9,7 @@ import java.util.Objects;
 public class PersistenceConverter {
     private final List<String> HEADER_LINE = new ArrayList<>();
 
-    PersistenceConverter() {
+    public PersistenceConverter() {
         HEADER_LINE.add("ID");
         HEADER_LINE.add("Datum");
         HEADER_LINE.add("Betrag");
