@@ -1,10 +1,21 @@
 package hwr.oop.budgetbook.view;
 
+import hwr.oop.budgetbook.logic.EntryListConverter;
+import hwr.oop.budgetbook.models.Entry;
+import hwr.oop.budgetbook.persistence.AccountPersistence;
+import hwr.oop.budgetbook.persistence.PersistenceConverter;
+
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Application {
     private final int TERMINAL_LENGTH = 150;
+    private final String CSV_PATH = "";
+
+    private final PersistenceConverter persistenceConverter = new PersistenceConverter();
+    private final EntryListConverter entryListConverter = new EntryListConverter();
 
     public static void main() {
         System.out.println("Application started.");
@@ -50,5 +61,23 @@ public class Application {
         System.out.println("Geben Sie eine der folgenden Aktionen mit der jeweiligen Nummer ein und bestätigen mit Enter.");
         System.out.println("[1] Neuen Eintrag erstellen");
         System.out.println("[2] Alle Einträge ansehen");
+    }
+
+    private List<List<String>> loadData() {
+        return AccountPersistence.readCsvFile(CSV_PATH);
+    }
+
+    private Map<Integer, Entry> convertDataForUsage(List<List<String>> convertableList) {
+        List<List<String>> listWithoutHeader = persistenceConverter.convertForUsage(convertableList);
+        return entryListConverter.convertLines(listWithoutHeader);
+    }
+
+    private List<List<String>> convertDataForSaving(Map<Integer, Entry> entryList) {
+        List<List<String>> rawList = entryListConverter.convertEntries(entryList);
+        return persistenceConverter.convertForPersistence(rawList);
+    }
+
+    private void saveData(List<List<String>> account) {
+        AccountPersistence.saveTable(account, CSV_PATH);
     }
 }
