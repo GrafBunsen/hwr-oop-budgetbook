@@ -1,7 +1,6 @@
 package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Transaction;
-import hwr.oop.budgetbook.view.Account;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook.view;
+package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Account {
-    private final String path;
+    private final String category;
     private final Map<Integer, Entry> table;
 
-    Account(String path, Map<Integer, Entry> table) {
+    Account(String category, Map<Integer, Entry> table) {
         this.table = table;
-        this.path = path;
+        this.category = category;
     }
 
-    public Account(String path) {
-        this(path, new HashMap<>());
+    public Account(String category) {
+        this(category, new HashMap<>());
     }
 
     public Map<Integer, Entry> getTable() {
@@ -51,8 +51,8 @@ public class Account {
         removeEntry(table.size());
     }
 
-    public String getPath() {
-        return path;
+    public String getCategory() {
+        return category;
     }
 
     public int sumOverAllEntries() {

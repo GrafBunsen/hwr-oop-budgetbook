@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook.view;
+package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
@@ -22,7 +22,7 @@ public class AccountTest {
     void getPath_DoesReturnSpecifiedPath() {
         String path = "./src/test/resources/testPath.csv";
         Account account = new Account(path);
-        assertThat(account.getPath()).isEqualTo(path);
+        assertThat(account.getCategory()).isEqualTo(path);
     }
 
     @Test
