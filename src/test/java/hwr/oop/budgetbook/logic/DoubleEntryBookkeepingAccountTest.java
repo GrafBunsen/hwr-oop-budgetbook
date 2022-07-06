@@ -2,7 +2,6 @@ package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
-import hwr.oop.budgetbook.view.Account;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

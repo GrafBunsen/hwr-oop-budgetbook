@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook.view;
+package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
@@ -10,26 +10,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountTest {
 
-    private Transaction getTestTransaction() {
-        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
-    }
-
-    private Entry getExpectedEntry(int id) {
-        return new Entry(id, getTestTransaction());
+    @Test
+    void getCategory_testCategoryIsGivenAndReturned_isTrue() {
+        String category = "Test";
+        Account account = new Account(category);
+        assertThat(account.getCategory()).isEqualTo(category);
     }
 
     @Test
-    void getPath_DoesReturnSpecifiedPath() {
-        String path = "./src/test/resources/testPath.csv";
-        Account account = new Account(path);
-        assertThat(account.getPath()).isEqualTo(path);
-    }
-
-    @Test
-    public void sumOverAllEntries_givesSumOfAllEntries() {
-        String path = "./src/test/resources/testSumOverAllEntries.csv";
+    public void sumOverAllEntries_givenThreeEntries_returnsSum() {
         Transaction givenTransaction = getTestTransaction();
-        Account account = new Account(path);
+        Account account = new Account("Test");
 
         account.addEntry(givenTransaction);
         account.addEntry(givenTransaction);
@@ -41,12 +32,11 @@ public class AccountTest {
     class AddEntryTest {
 
         @Test
-        void addEntry_givenLineIsExpectedToBePartOfTheTable() {
+        void addEntry_EntryIsGiven_isAddedToTable() {
             Transaction givenTransaction = getTestTransaction();
             Entry expectedEntry = getExpectedEntry(1);
 
-            String path = "./src/test/resources/testAddLine.csv";
-            Account account = new Account(path);
+            Account account = new Account("Test");
             account.addEntry(givenTransaction);
 
             assertThat(account.getTable()).containsValues(expectedEntry);
@@ -56,11 +46,10 @@ public class AccountTest {
     @Nested
     class RemoveEntryTest {
         @Test
-        void removeEntry_aLineSpecifiedByIdIsRemoved() {
-            String path = "./src/test/resources/testRemoveLine.csv";
+        void removeEntry_anEntryIsSpecifiedById_IsRemoved() {
             Transaction givenTransaction = getTestTransaction();
             Entry expectedEntry = getExpectedEntry(1);
-            Account account = new Account(path);
+            Account account = new Account("Test");
 
             account.addEntry(givenTransaction);
             account.removeEntry(1);
@@ -68,11 +57,10 @@ public class AccountTest {
         }
 
         @Test
-        void removeLastEntry_LastLineOfTheTableIsRemoved() {
-            String path = "./src/test/resources/testRemoveLine.csv";
+        void removeLastEntry_TableIsGiven_LastEntryIsRemoved() {
             Transaction givenTransaction = getTestTransaction();
             Entry expectedEntry = getExpectedEntry(3);
-            Account account = new Account(path);
+            Account account = new Account("Test");
 
             account.addEntry(givenTransaction);
             account.addEntry(givenTransaction);
@@ -80,6 +68,14 @@ public class AccountTest {
             account.removeLastEntry();
             assertThat(account.getTable()).doesNotContainValue(expectedEntry);
         }
+    }
+
+    private Transaction getTestTransaction() {
+        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
+    }
+
+    private Entry getExpectedEntry(int id) {
+        return new Entry(id, getTestTransaction());
     }
 }
 

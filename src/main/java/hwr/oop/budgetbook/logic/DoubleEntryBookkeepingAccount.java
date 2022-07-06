@@ -1,7 +1,6 @@
 package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Transaction;
-import hwr.oop.budgetbook.view.Account;
 
 public class DoubleEntryBookkeepingAccount {
     private final Income income;
