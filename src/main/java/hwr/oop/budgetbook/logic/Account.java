@@ -5,6 +5,7 @@ import hwr.oop.budgetbook.models.Transaction;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Account {
     private final String category;
@@ -61,5 +62,21 @@ public class Account {
             sum += table.get(key).getAmount();
         }
         return sum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // self check
+        if (this == o)
+            return true;
+        // null check
+        if (o == null)
+            return false;
+        // type check and cast
+        if (getClass() != o.getClass())
+            return false;
+        Account account = (Account) o;
+        // field comparison
+        return Objects.equals(table, account.table);
     }
 }

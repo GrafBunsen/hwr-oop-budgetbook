@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook.logic;
+package hwr.oop.budgetbook.persistence;
 
 import hwr.oop.budgetbook.models.Entry;
 
@@ -11,9 +11,7 @@ public class EntryListConverter {
     public Map<Integer, Entry> convertLines(List<List<String>> fileLines) {
         Map<Integer, Entry> convertedList = new HashMap<>();
 
-        fileLines.forEach((List<String> line) -> {
-            convertedList.put(Integer.parseInt(line.get(0)), this.convertToEntry(line));
-        });
+        fileLines.forEach((List<String> line) -> convertedList.put(Integer.parseInt(line.get(0)), this.convertToEntry(line)));
 
         return convertedList;
     }
@@ -28,9 +26,7 @@ public class EntryListConverter {
     public List<List<String>> convertEntries(Map<Integer, Entry> entryList) {
         List<List<String>> convertedList = new ArrayList<>();
 
-        entryList.forEach((id, entry) -> {
-            convertedList.add(convertToList(entry));
-        });
+        entryList.forEach((id, entry) -> convertedList.add(convertToList(entry)));
 
         return convertedList;
     }
