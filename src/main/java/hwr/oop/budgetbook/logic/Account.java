@@ -43,12 +43,13 @@ public class Account {
         table.put(id, entry);
     }
 
-    public void removeEntry(int id) {
-        table.remove(id);
-    }
-
-    public void removeLastEntry() {
-        removeEntry(table.size());
+    public void removeEntry(Transaction transaction) {
+        for (int i = 1; i <= table.size(); i++) {
+            Entry entry = table.get(i);
+            if (entry.isDerivedOf(transaction)) {
+                table.remove(i);
+            }
+        }
     }
 
     public String getCategory() {

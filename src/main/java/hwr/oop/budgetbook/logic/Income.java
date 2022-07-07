@@ -28,4 +28,9 @@ public class Income {
     public int calculateSumOfIncome() {
         return balance.sumOverAllEntries();
     }
+
+    public void removeEntry(Transaction transaction) {
+        transaction.setAmount(transaction.getAmount()*-1);
+        balance.removeEntry(transaction);
+    }
 }
