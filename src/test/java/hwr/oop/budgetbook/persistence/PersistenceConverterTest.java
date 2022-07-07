@@ -80,7 +80,7 @@ public class PersistenceConverterTest {
         listToRead.add(itemInThisList);
 
         try {
-            converter.convertForUsage(listToRead);
+            List<List<String>> convertedList = converter.convertForUsage(listToRead);
         } catch (HeaderLineNotFoundException error) {
             Assertions.assertThat(error).isInstanceOf(HeaderLineNotFoundException.class);
         }
