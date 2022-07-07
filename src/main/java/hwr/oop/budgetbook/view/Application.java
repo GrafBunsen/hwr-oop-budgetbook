@@ -1,7 +1,9 @@
 package hwr.oop.budgetbook.view;
 
+import hwr.oop.budgetbook.logic.DoubleEntryBookkeepingAccount;
 import hwr.oop.budgetbook.logic.EntryListConverter;
 import hwr.oop.budgetbook.models.Entry;
+import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.persistence.AccountPersistence;
 import hwr.oop.budgetbook.persistence.PersistenceConverter;
 
@@ -13,9 +15,9 @@ import java.util.Scanner;
 public class Application {
     private final int TERMINAL_LENGTH = 150;
     private final String CSV_PATH = "";
-
     private final PersistenceConverter persistenceConverter = new PersistenceConverter();
     private final EntryListConverter entryListConverter = new EntryListConverter();
+    private DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount;
 
     public static void main() {
         System.out.println("Application started.");
@@ -79,5 +81,17 @@ public class Application {
 
     private void saveData(List<List<String>> account) {
         AccountPersistence.saveTable(account, CSV_PATH);
+    }
+
+    private void addTransaction(Transaction transaction) {
+        doubleEntryBookkeepingAccount.addTransaction(transaction);
+    }
+
+    public void removeTransaction(Transaction transaction){
+        doubleEntryBookkeepingAccount.removeTransaction(transaction);
+    }
+
+    public boolean isVerified(){
+        return doubleEntryBookkeepingAccount.isVerified();
     }
 }

@@ -1,13 +1,19 @@
+/*
 package hwr.oop.budgetbook.persistence;
+
 
 import hwr.oop.budgetbook.exceptions.ReadCsvFileFailedException;
 import hwr.oop.budgetbook.exceptions.SaveTableFailedException;
-import hwr.oop.budgetbook.view.Account;
+import hwr.oop.budgetbook.logic.Account;
+import hwr.oop.budgetbook.logic.EntryListConverter;
+import hwr.oop.budgetbook.models.Entry;
+import hwr.oop.budgetbook.models.Transaction;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +42,10 @@ public class AccountPersistenceTest {
         expectedLine.add("1");
         expectedLine.addAll(getTestLine());
         return expectedLine;
+    }
+
+    private Transaction getTestTransaction() {
+        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
     }
 
     @Nested
@@ -80,15 +90,15 @@ public class AccountPersistenceTest {
 
         @Test
         void saveTable_ifALineIsAddedAndTheFileIsSavedItIsPartOfTheTableAfterReadingAgain() {
-            List<String> givenLine = getTestLine();
+            Transaction givenTransaction = getTestTransaction();
             String path = "./src/test/resources/testSaveTable.csv";
 
             Account account = new Account(path);
 
-            account.addLine(givenLine);
-            AccountPersistence.saveTable(account.getTable(), account.getPath());
+            account.addEntry(givenTransaction);
+            AccountPersistence.saveTable(EntryListConverter., account.getCategory());
 
-            List<List<String>> savedTable = account.getTable();
+            Map<Integer, Entry> savedTable = account.getTable();
             List<List<String>> readTable = AccountPersistence.readCsvFile(path);
 
             assertThat(savedTable).isEqualTo(readTable);
@@ -114,3 +124,5 @@ public class AccountPersistenceTest {
         }
     }
 }
+
+ */
