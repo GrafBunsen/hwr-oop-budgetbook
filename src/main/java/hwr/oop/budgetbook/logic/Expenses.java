@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Expenses {
-     final Map<String, Account> accounts;
+    final Map<String, Account> accounts;
 
     public Expenses() {
         accounts = new HashMap<>();
@@ -46,13 +46,6 @@ public class Expenses {
             return accounts.get(category);
         }
         return null;
-    }
-    
-    public void removeTransaction(Transaction transaction) {
-        String category = transaction.getCategory();
-
-        Account account = accounts.get(category);
-        account.removeEntry(transaction);
     }
 
     @Override

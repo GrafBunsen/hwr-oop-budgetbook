@@ -4,16 +4,15 @@ import hwr.oop.budgetbook.logic.DoubleEntryBookkeepingAccount;
 import hwr.oop.budgetbook.persistence.AccountPersistence;
 
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Application {
     private final int TERMINAL_LENGTH = 150;
     private final String CSV_PATH = "";
-    private DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount;
     private AccountPersistence accountPersistence;
 
-    public static void main() {
+    public void main() {
+        accountPersistence = new AccountPersistence();
         System.out.println("Application started.");
     }
 
@@ -63,7 +62,7 @@ public class Application {
         return accountPersistence.readCsvFile(CSV_PATH);
     }
 
-    private void saveData(List<List<String>> account) {
+    private void saveData(DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount) {
         accountPersistence.saveDoubleEntryBookKeepingAccount(doubleEntryBookkeepingAccount, CSV_PATH);
     }
 }

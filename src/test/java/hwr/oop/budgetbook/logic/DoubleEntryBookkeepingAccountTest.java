@@ -64,30 +64,6 @@ public class DoubleEntryBookkeepingAccountTest {
     }
 
     @Test
-    public void removeTransaction_TransactionSpecified_isRemoved() {
-        Transaction testTransaction = getTestTransaction();
-        Transaction differentTransaction = getTestTransaction();
-        differentTransaction.setAmount(99);
-
-        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        doubleEntryBookkeepingAccount.addTransaction(testTransaction);
-        doubleEntryBookkeepingAccount.addTransaction(differentTransaction);
-        doubleEntryBookkeepingAccount.addTransaction(differentTransaction);
-
-        doubleEntryBookkeepingAccount.removeTransaction(testTransaction);
-
-        Entry expectedExpenseEntry = getExpectedEntry();
-        Entry expectedIncomeEntry = getExpectedEntry();
-        expectedIncomeEntry.setAmount(-1* expectedIncomeEntry.getAmount());
-        Account expensesAccount = doubleEntryBookkeepingAccount.getExpenseCategoryAccount(testTransaction.getCategory());
-        Map<Integer,Entry> incomeAccountTable = doubleEntryBookkeepingAccount.getIncome().getTable();
-
-        assertThat(expensesAccount.getTable()).doesNotContainValue(expectedExpenseEntry);
-        assertThat(incomeAccountTable).doesNotContainValue(expectedIncomeEntry);
-
-    }
-
-    @Test
     public void isVerified_differenceBetweenIncomeAndExpensesIsZero_isTrue() {
         Transaction testTransaction = getTestTransaction();
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
