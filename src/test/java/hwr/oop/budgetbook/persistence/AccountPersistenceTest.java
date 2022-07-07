@@ -7,34 +7,12 @@ import hwr.oop.budgetbook.models.Transaction;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountPersistenceTest {
 
     private Transaction getTestTransaction() {
         return new Transaction(220102, -50, "Einkauf", "Wocheneinkauf REWE");
-    }
-
-    private List<String> getHeader() {
-        List<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        return header;
-    }
-
-    private List<String> getTestLine() {
-        List<String> givenLine = new ArrayList<>();
-        givenLine.add("220102");
-        givenLine.add("-50");
-        givenLine.add("Einkauf");
-        givenLine.add("Wocheneinkauf REWE");
-        return givenLine;
     }
 
     @Nested
