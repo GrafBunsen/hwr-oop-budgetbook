@@ -1,21 +1,11 @@
-/*
 package hwr.oop.budgetbook.persistence;
-
 
 import hwr.oop.budgetbook.exceptions.ReadCsvFileFailedException;
 import hwr.oop.budgetbook.exceptions.SaveTableFailedException;
 import hwr.oop.budgetbook.logic.DoubleEntryBookkeepingAccount;
-import hwr.oop.budgetbook.logic.Account;
-import hwr.oop.budgetbook.logic.EntryListConverter;
-import hwr.oop.budgetbook.models.Entry;
-
 import hwr.oop.budgetbook.models.Transaction;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,10 +13,6 @@ public class AccountPersistenceTest {
 
     private Transaction getTestTransaction() {
         return new Transaction(220102, -50, "Einkauf", "Wocheneinkauf REWE");
-    }
-
-    private Transaction getTestTransaction() {
-        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
     }
 
     @Nested
@@ -82,6 +68,7 @@ public class AccountPersistenceTest {
             DoubleEntryBookkeepingAccount readAccount = accountPersistence.readCsvFile(path);
 
             assertThat(givenAccount).isEqualTo(readAccount);
+            //assertThat(givenAccount.getIncome()).isEqualTo(readAccount.getIncome());
         }
 
         @Test
@@ -106,5 +93,3 @@ public class AccountPersistenceTest {
         }
     }
 }
-
- */

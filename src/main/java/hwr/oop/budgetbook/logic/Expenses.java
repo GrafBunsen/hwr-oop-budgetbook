@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Expenses {
-    final Map<String, Account> accounts;
+     final Map<String, Account> accounts;
 
     public Expenses() {
         accounts = new HashMap<>();

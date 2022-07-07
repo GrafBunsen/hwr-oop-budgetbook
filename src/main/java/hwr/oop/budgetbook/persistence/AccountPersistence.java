@@ -20,7 +20,7 @@ public class AccountPersistence {
     private final PersistenceConverter persistenceConverter;
     private final MapConverter mapConverter;
 
-    public AccountPersistence() {
+    AccountPersistence() {
         entryListConverter = new EntryListConverter();
         persistenceConverter = new PersistenceConverter();
         mapConverter = new MapConverter();

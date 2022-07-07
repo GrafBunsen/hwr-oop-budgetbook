@@ -76,8 +76,8 @@ public class DoubleEntryBookkeepingAccountTest {
 
         doubleEntryBookkeepingAccount.removeTransaction(testTransaction);
 
-        Entry expectedExpenseEntry = getExpectedEntry(1);
-        Entry expectedIncomeEntry = getExpectedEntry(1);
+        Entry expectedExpenseEntry = getExpectedEntry();
+        Entry expectedIncomeEntry = getExpectedEntry();
         expectedIncomeEntry.setAmount(-1* expectedIncomeEntry.getAmount());
         Account expensesAccount = doubleEntryBookkeepingAccount.getExpenseCategoryAccount(testTransaction.getCategory());
         Map<Integer,Entry> incomeAccountTable = doubleEntryBookkeepingAccount.getIncome().getTable();
