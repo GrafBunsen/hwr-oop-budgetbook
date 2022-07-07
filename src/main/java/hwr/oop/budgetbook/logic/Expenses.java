@@ -47,6 +47,13 @@ public class Expenses {
         }
         return null;
     }
+    
+    public void removeTransaction(Transaction transaction) {
+        String category = transaction.getCategory();
+
+        Account account = accounts.get(category);
+        account.removeEntry(transaction);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -33,6 +33,11 @@ public class DoubleEntryBookkeepingAccount {
         int sum = sumOfIncome + sumOfExpenses;
         return sum == 0;
     }
+    
+    public void removeTransaction(Transaction transaction) {
+        expenses.removeTransaction(transaction);
+        income.removeEntry(transaction);
+    }
 
     @Override
     public boolean equals(Object o) {
