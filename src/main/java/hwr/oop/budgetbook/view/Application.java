@@ -1,13 +1,15 @@
 package hwr.oop.budgetbook.view;
 
 import hwr.oop.budgetbook.logic.DoubleEntryBookkeepingAccount;
-
 import hwr.oop.budgetbook.logic.EntryListConverter;
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
 import hwr.oop.budgetbook.persistence.AccountPersistence;
+import hwr.oop.budgetbook.persistence.PersistenceConverter;
 
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Application {
@@ -17,8 +19,7 @@ public class Application {
     private final EntryListConverter entryListConverter = new EntryListConverter();
     private DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount;
 
-    public void main() {
-        accountPersistence = new AccountPersistence();
+    public static void main() {
         System.out.println("Application started.");
     }
 
@@ -64,12 +65,22 @@ public class Application {
         System.out.println("[2] Alle Einträge ansehen");
     }
 
-    private DoubleEntryBookkeepingAccount loadData() {
-        return accountPersistence.readCsvFile(CSV_PATH);
+    private List<List<String>> loadData() {
+        return AccountPersistence.readCsvFile(CSV_PATH);
     }
 
-    private void saveData(DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount) {
-        accountPersistence.saveDoubleEntryBookKeepingAccount(doubleEntryBookkeepingAccount, CSV_PATH);
+    private Map<Integer, Entry> convertDataForUsage(List<List<String>> convertableList) {
+        List<List<String>> listWithoutHeader = persistenceConverter.convertForUsage(convertableList);
+        return entryListConverter.convertLines(listWithoutHeader);
+    }
+
+    private List<List<String>> convertDataForSaving(Map<Integer, Entry> entryList) {
+        List<List<String>> rawList = entryListConverter.convertEntries(entryList);
+        return persistenceConverter.convertForPersistence(rawList);
+    }
+
+    private void saveData(List<List<String>> account) {
+        AccountPersistence.saveTable(account, CSV_PATH);
     }
 
     private void addTransaction(Transaction transaction) {

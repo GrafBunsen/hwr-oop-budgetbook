@@ -9,30 +9,36 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DoubleEntryBookkeepingAccountTest {
+    private Transaction getTestTransaction() {
+        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
+    }
+
+    private Entry getExpectedEntry(int id) {
+        return new Entry(id, getTestTransaction());
+    }
+
     @Test
     public void addTransaction_entryIsInExpenses_isTrue() {
         Transaction testTransaction = getTestTransaction();
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
         doubleEntryBookkeepingAccount.addTransaction(testTransaction);
 
-        Entry expectedEntry = getExpectedExpenseEntry();
+        Entry expectedEntry = getExpectedEntry(1);
         Map<Integer, Entry> accountInWhichEntryIsToBeFound = doubleEntryBookkeepingAccount.getExpenseCategoryAccount(expectedEntry.getCategory()).getTable();
 
         assertThat(accountInWhichEntryIsToBeFound).containsValue(expectedEntry);
     }
 
     @Test
-    public void addTransaction_entryIsInExpenseNegated_isTrue() {
+    public void addTransaction_entryIsInIncomeNegated_isTrue() {
         Transaction testTransaction = getTestTransaction();
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
         doubleEntryBookkeepingAccount.addTransaction(testTransaction);
 
-        Entry expectedEntry = getExpectedEntry();
-        expectedEntry.setAmount(50);
+        Entry expectedEntry = getExpectedEntry(1);
+        expectedEntry.setAmount(-50);
 
-        Map<Integer, Entry> expectedAccountTable = doubleEntryBookkeepingAccount.getExpenseCategoryAccount(testTransaction.getCategory()).getTable();
-
-        assertThat(expectedAccountTable).containsValue(expectedEntry);
+        assertThat(doubleEntryBookkeepingAccount.getIncome().getTable()).containsValue(expectedEntry);
     }
 
     @Test
@@ -41,7 +47,7 @@ public class DoubleEntryBookkeepingAccountTest {
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
         doubleEntryBookkeepingAccount.addTransaction(testTransaction);
 
-        Entry expectedEntry = getExpectedExpenseEntry();
+        Entry expectedEntry = getExpectedEntry(1);
 
         assertThat(doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Einkauf").getTable()).containsValue(expectedEntry);
     }
@@ -52,11 +58,14 @@ public class DoubleEntryBookkeepingAccountTest {
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
         doubleEntryBookkeepingAccount.addTransaction(testTransaction);
 
-        Transaction differentTestTransactionInSameCategory = new Transaction(220202, -100, "Einkauf", "Wocheneinkauf Lidl");
+        Transaction differentTestTransactionInSameCategory = new Transaction(testTransaction);
+        differentTestTransactionInSameCategory.setDate(220202);
+        differentTestTransactionInSameCategory.setAmount(100);
+        differentTestTransactionInSameCategory.setDescription("Wocheneinkauf Lidl");
         doubleEntryBookkeepingAccount.addTransaction(differentTestTransactionInSameCategory);
 
-        Entry expectedFirstEntry = new Entry(1, 220102, 50, "Einkauf", "Wocheneinkauf REWE");
-        Entry expectedSecondEntry = new Entry(2, 220202, 100, "Einkauf", "Wocheneinkauf Lidl");
+        Entry expectedFirstEntry = new Entry(1, testTransaction);
+        Entry expectedSecondEntry = new Entry(2, differentTestTransactionInSameCategory);
 
         Map<Integer, Entry> categoryAccountTable = doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Einkauf").getTable();
 
@@ -102,43 +111,5 @@ public class DoubleEntryBookkeepingAccountTest {
         Account account = doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Test");
 
         assertThat(account).isEqualTo(null);
-    }
-
-    @Test
-    void equals_sameObject_isTrue() {
-        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        assertThat(doubleEntryBookkeepingAccount).isEqualTo(doubleEntryBookkeepingAccount);
-    }
-
-    @Test
-    void equals_nullObject_isFalse() {
-        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        assertThat(doubleEntryBookkeepingAccount).isNotEqualTo(null);
-    }
-
-    @Test
-    void equals_differentKindOfObject_isFalse() {
-        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        Account account = new Account("Test");
-        assertThat(doubleEntryBookkeepingAccount).isNotEqualTo(account);
-    }
-
-    @Test
-    void equals_equalObject_isTrue() {
-        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        DoubleEntryBookkeepingAccount equaldoubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        assertThat(doubleEntryBookkeepingAccount).isEqualTo(equaldoubleEntryBookkeepingAccount);
-    }
-
-    private Transaction getTestTransaction() {
-        return new Transaction(220102, -50, "Einkauf", "Wocheneinkauf REWE");
-    }
-
-    private Entry getExpectedEntry() {
-        return new Entry(1, getTestTransaction());
-    }
-
-    private Entry getExpectedExpenseEntry() {
-        return new Entry(1, 220102, 50, "Einkauf", "Wocheneinkauf REWE");
     }
 }

@@ -31,14 +31,13 @@ public class AccountTest {
     void addEntry_EntryIsGiven_isAddedToTable() {
         Transaction givenTransaction = getTestTransaction();
         Entry expectedEntry = getExpectedEntry(1);
-        
 
         Account account = new Account("Test");
         account.addEntry(givenTransaction);
 
         assertThat(account.getTable()).containsValues(expectedEntry);
     }
-    
+
     @Test
     void removeEntry_anEntryIsGiven_IsRemoved() {
         Transaction givenTransaction = getTestTransaction();
@@ -48,33 +47,6 @@ public class AccountTest {
         account.addEntry(givenTransaction);
         account.removeEntry(givenTransaction);
         assertThat(account.getTable()).doesNotContainValue(expectedEntry);
-    
-    
-
-    @Test
-    void equals_sameObject_isTrue() {
-        Account account = new Account("Test");
-        assertThat(account).isEqualTo(account);
-    }
-
-    @Test
-    void equals_nullObject_isFalse() {
-        Account account = new Account("Test");
-        assertThat(account).isNotEqualTo(null);
-    }
-
-    @Test
-    void equals_differentKindOfObject_isFalse() {
-        Account account = new Account("Test");
-        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
-        assertThat(account).isNotEqualTo(doubleEntryBookkeepingAccount);
-    }
-
-    @Test
-    void equals_equalObject_isTrue() {
-        Account account = new Account("Test");
-        Account equalAccount = new Account("Test");
-        assertThat(account).isEqualTo(equalAccount);
     }
 
 

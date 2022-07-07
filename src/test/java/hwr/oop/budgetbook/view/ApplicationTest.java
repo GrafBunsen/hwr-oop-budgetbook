@@ -1,7 +1,6 @@
 package hwr.oop.budgetbook.view;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ApplicationTest {
@@ -11,7 +10,6 @@ public class ApplicationTest {
         application.printMainScreen();
     }
 
-    @Disabled
     @Test
     void checkIfNumberPromptReturnsCorrectInputValue() {
         Application application = new Application();
@@ -19,7 +17,6 @@ public class ApplicationTest {
         Assertions.assertThat(input).isEqualTo(2);
     }
 
-    @Disabled
     @Test
     void checkIfStringPromptReturnsCorrectInputValue() {
         Application application = new Application();
