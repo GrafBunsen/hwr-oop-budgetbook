@@ -4,9 +4,11 @@ package hwr.oop.budgetbook.persistence;
 
 import hwr.oop.budgetbook.exceptions.ReadCsvFileFailedException;
 import hwr.oop.budgetbook.exceptions.SaveTableFailedException;
+import hwr.oop.budgetbook.logic.DoubleEntryBookkeepingAccount;
 import hwr.oop.budgetbook.logic.Account;
 import hwr.oop.budgetbook.logic.EntryListConverter;
 import hwr.oop.budgetbook.models.Entry;
+
 import hwr.oop.budgetbook.models.Transaction;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,30 +20,9 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountPersistenceTest {
-    private List<String> getHeader() {
-        List<String> header = new ArrayList<>();
-        header.add("ID");
-        header.add("Datum");
-        header.add("Betrag");
-        header.add("Kategorie");
-        header.add("Beschreibung");
-        return header;
-    }
 
-    private List<String> getTestLine() {
-        List<String> givenLine = new ArrayList<>();
-        givenLine.add("220102");
-        givenLine.add("50");
-        givenLine.add("Einkauf");
-        givenLine.add("Wocheneinkauf REWE");
-        return givenLine;
-    }
-
-    private List<String> getExpectedLine() {
-        List<String> expectedLine = new ArrayList<>();
-        expectedLine.add("1");
-        expectedLine.addAll(getTestLine());
-        return expectedLine;
+    private Transaction getTestTransaction() {
+        return new Transaction(220102, -50, "Einkauf", "Wocheneinkauf REWE");
     }
 
     private Transaction getTestTransaction() {
@@ -51,31 +32,31 @@ public class AccountPersistenceTest {
     @Nested
     class ReadTableTest {
         @Test
-        void readCsvFile_ReadsExistingTable() {
+        void readCsvFile_ReadsExistingTable_isAsExpected() {
             String path = "./src/test/resources/testPersistence.csv";
+            AccountPersistence accountPersistence = new AccountPersistence();
 
-            List<List<String>> expectedTable = new ArrayList<>();
-            List<String> line1 = getHeader();
-            List<String> line2 = getExpectedLine();
-            expectedTable.add(line1);
-            expectedTable.add(line2);
+            DoubleEntryBookkeepingAccount expectedAccount = new DoubleEntryBookkeepingAccount();
+            expectedAccount.addTransaction(getTestTransaction());
 
-            List<List<String>> readTable = AccountPersistence.readCsvFile(path);
+            DoubleEntryBookkeepingAccount readAccount = accountPersistence.readCsvFile(path);
 
-            assertThat(readTable).isEqualTo(expectedTable);
+            assertThat(expectedAccount).isEqualTo(readAccount);
         }
 
         @Test
-        void readCsvFile_TableIsNotRead() {
+        void readCsvFile_TableIsNotRead_throwsException() {
             String path = "./src/test/resources/testSaveTableNotPossible"; //this file mustn't exist
             Throwable thrown = catchReadThrowable(path);
             assertThat(thrown).isInstanceOf(ReadCsvFileFailedException.class).hasMessageContaining("Could not read File");
         }
 
         private Throwable catchReadThrowable(String path) {
+            AccountPersistence accountPersistence = new AccountPersistence();
+
             Throwable thrown = null;
             try {
-                AccountPersistence.readCsvFile(path);
+                accountPersistence.readCsvFile(path);
             } catch (ReadCsvFileFailedException e) {
                 e.printStackTrace();
                 thrown = e;
@@ -84,38 +65,39 @@ public class AccountPersistenceTest {
         }
     }
 
-
     @Nested
     class SaveTableTest {
 
         @Test
-        void saveTable_ifALineIsAddedAndTheFileIsSavedItIsPartOfTheTableAfterReadingAgain() {
-            Transaction givenTransaction = getTestTransaction();
+        void saveTable_ifALineIsAddedAndTheFileIsSaved_lineIsPartOfTableAfterReading() {
+            AccountPersistence accountPersistence = new AccountPersistence();
+
             String path = "./src/test/resources/testSaveTable.csv";
 
-            Account account = new Account(path);
+            DoubleEntryBookkeepingAccount givenAccount = new DoubleEntryBookkeepingAccount();
+            givenAccount.addTransaction(getTestTransaction());
 
-            account.addEntry(givenTransaction);
-            AccountPersistence.saveTable(EntryListConverter., account.getCategory());
+            accountPersistence.saveDoubleEntryBookKeepingAccount(givenAccount, path);
 
-            Map<Integer, Entry> savedTable = account.getTable();
-            List<List<String>> readTable = AccountPersistence.readCsvFile(path);
+            DoubleEntryBookkeepingAccount readAccount = accountPersistence.readCsvFile(path);
 
-            assertThat(savedTable).isEqualTo(readTable);
+            assertThat(givenAccount).isEqualTo(readAccount);
         }
 
         @Test
-        void saveTable_anExceptionIsThrownWhenSavingIsNotPossible() {
+        void saveTable_SavingIsNotPossible_ThrowsException() {
             String path = "./src/test/resources/testSaveTableNotPossible.csv"; //this file has to be read-only
-            Account account = new Account(path);
-            Throwable thrown = catchSaveThrowable(account);
+            DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
+            doubleEntryBookkeepingAccount.addTransaction(getTestTransaction());
+            Throwable thrown = catchSaveThrowable(doubleEntryBookkeepingAccount, path);
             assertThat(thrown).isInstanceOf(SaveTableFailedException.class).hasMessageContaining("Could not write File");
         }
 
-        private Throwable catchSaveThrowable(Account account) {
+        private Throwable catchSaveThrowable(DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount, String path) {
             Throwable thrown = null;
+            AccountPersistence accountPersistence = new AccountPersistence();
             try {
-                AccountPersistence.saveTable(account.getTable(), account.getPath());
+                accountPersistence.saveDoubleEntryBookKeepingAccount(doubleEntryBookkeepingAccount, path);
             } catch (SaveTableFailedException e) {
                 e.printStackTrace();
                 thrown = e;

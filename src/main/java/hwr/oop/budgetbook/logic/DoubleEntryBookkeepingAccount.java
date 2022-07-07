@@ -2,11 +2,13 @@ package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Transaction;
 
+import java.util.Objects;
+
 public class DoubleEntryBookkeepingAccount {
     private final Income income;
     private final Expenses expenses;
 
-    DoubleEntryBookkeepingAccount() {
+    public DoubleEntryBookkeepingAccount() {
         income = new Income();
         expenses = new Expenses();
     }
@@ -31,9 +33,26 @@ public class DoubleEntryBookkeepingAccount {
         int sum = sumOfIncome + sumOfExpenses;
         return sum == 0;
     }
-
+    
     public void removeTransaction(Transaction transaction) {
         expenses.removeTransaction(transaction);
         income.removeEntry(transaction);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // self check
+        if (this == o)
+            return true;
+        // null check
+        if (o == null)
+            return false;
+        // type check and cast
+        if (getClass() != o.getClass())
+            return false;
+        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = (DoubleEntryBookkeepingAccount) o;
+        // field comparison
+        return Objects.equals(income, doubleEntryBookkeepingAccount.income)
+                && Objects.equals(expenses, doubleEntryBookkeepingAccount.expenses);
     }
 }

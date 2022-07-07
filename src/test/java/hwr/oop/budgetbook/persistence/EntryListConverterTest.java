@@ -1,4 +1,4 @@
-package hwr.oop.budgetbook.logic;
+package hwr.oop.budgetbook.persistence;
 
 
 import hwr.oop.budgetbook.models.Entry;
