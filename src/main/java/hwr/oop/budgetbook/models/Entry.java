@@ -82,10 +82,4 @@ public class Entry {
     }
 
 
-    public boolean isDerivedOf(Transaction transaction) {
-        return Objects.equals(date, transaction.date)
-                && Objects.equals(amount, transaction.amount)
-                && Objects.equals(category, transaction.category)
-                && Objects.equals(description, transaction.description);
-    }
 }
