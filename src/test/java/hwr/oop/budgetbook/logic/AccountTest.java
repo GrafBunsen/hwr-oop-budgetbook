@@ -2,7 +2,6 @@ package hwr.oop.budgetbook.logic;
 
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,46 +27,66 @@ public class AccountTest {
         assertThat(account.sumOverAllEntries()).isEqualTo(150);
     }
 
-    @Nested
-    class AddEntryTest {
 
-        @Test
-        void addEntry_EntryIsGiven_isAddedToTable() {
-            Transaction givenTransaction = getTestTransaction();
-            Entry expectedEntry = getExpectedEntry(1);
+    @Test
+    void addEntry_EntryIsGiven_isAddedToTable() {
+        Transaction givenTransaction = getTestTransaction();
+        Entry expectedEntry = getExpectedEntry(1);
 
-            Account account = new Account("Test");
-            account.addEntry(givenTransaction);
+        Account account = new Account("Test");
+        account.addEntry(givenTransaction);
 
-            assertThat(account.getTable()).containsValues(expectedEntry);
-        }
+        assertThat(account.getTable()).containsValues(expectedEntry);
     }
 
-    @Nested
-    class RemoveEntryTest {
-        @Test
-        void removeEntry_anEntryIsSpecifiedById_IsRemoved() {
-            Transaction givenTransaction = getTestTransaction();
-            Entry expectedEntry = getExpectedEntry(1);
-            Account account = new Account("Test");
+    @Test
+    void removeEntry_anEntryIsSpecifiedById_IsRemoved() {
+        Transaction givenTransaction = getTestTransaction();
+        Entry expectedEntry = getExpectedEntry(1);
+        Account account = new Account("Test");
 
-            account.addEntry(givenTransaction);
-            account.removeEntry(1);
-            assertThat(account.getTable()).doesNotContainValue(expectedEntry);
-        }
+        account.addEntry(givenTransaction);
+        account.removeEntry(1);
+        assertThat(account.getTable()).doesNotContainValue(expectedEntry);
+    }
 
-        @Test
-        void removeLastEntry_TableIsGiven_LastEntryIsRemoved() {
-            Transaction givenTransaction = getTestTransaction();
-            Entry expectedEntry = getExpectedEntry(3);
-            Account account = new Account("Test");
+    @Test
+    void removeLastEntry_TableIsGiven_LastEntryIsRemoved() {
+        Transaction givenTransaction = getTestTransaction();
+        Entry expectedEntry = getExpectedEntry(3);
+        Account account = new Account("Test");
 
-            account.addEntry(givenTransaction);
-            account.addEntry(givenTransaction);
-            account.addEntry(givenTransaction);
-            account.removeLastEntry();
-            assertThat(account.getTable()).doesNotContainValue(expectedEntry);
-        }
+        account.addEntry(givenTransaction);
+        account.addEntry(givenTransaction);
+        account.addEntry(givenTransaction);
+        account.removeLastEntry();
+        assertThat(account.getTable()).doesNotContainValue(expectedEntry);
+    }
+
+    @Test
+    void equals_sameObject_isTrue() {
+        Account account = new Account("Test");
+        assertThat(account).isEqualTo(account);
+    }
+
+    @Test
+    void equals_nullObject_isFalse() {
+        Account account = new Account("Test");
+        assertThat(account).isNotEqualTo(null);
+    }
+
+    @Test
+    void equals_differentKindOfObject_isFalse() {
+        Account account = new Account("Test");
+        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
+        assertThat(account).isNotEqualTo(doubleEntryBookkeepingAccount);
+    }
+
+    @Test
+    void equals_equalObject_isTrue() {
+        Account account = new Account("Test");
+        Account equalAccount = new Account("Test");
+        assertThat(account).isEqualTo(equalAccount);
     }
 
     private Transaction getTestTransaction() {
