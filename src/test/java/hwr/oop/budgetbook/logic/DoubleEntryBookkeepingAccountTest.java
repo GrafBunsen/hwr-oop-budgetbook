@@ -9,6 +9,16 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DoubleEntryBookkeepingAccountTest {
+
+    @Test
+    public void DoubleEntryBookkeepingAccount_isGiven_isSaved(){
+        DoubleEntryBookkeepingAccount givenAccount = new DoubleEntryBookkeepingAccount();
+        givenAccount.addTransaction(getTestTransaction());
+
+        DoubleEntryBookkeepingAccount constructedAccount = new DoubleEntryBookkeepingAccount(givenAccount);
+
+        assertThat(givenAccount).isEqualTo(constructedAccount);
+    }
     @Test
     public void addTransaction_entryIsInExpenses_isTrue() {
         Transaction testTransaction = getTestTransaction();

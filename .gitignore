@@ -33,3 +33,4 @@ build/
 ### Maven Wrapper ###
 /.mvn/wrapper/maven-wrapper.jar
 /.env/
+/src/test/resources/testSaveTable.csv
