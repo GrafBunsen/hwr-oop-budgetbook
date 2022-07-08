@@ -44,34 +44,6 @@ public class Application {
         }
     }
 
-    private void printTransaction() {
-        System.out.println("Eintrag entfernen:");
-        for (String key : doubleEntryBookkeepingAccount.getExpenses().getAccounts().keySet()) {
-            ConsoleOutput consoleOutput = new ConsoleOutput();
-            consoleOutput.printTable(doubleEntryBookkeepingAccount.getExpenses().getCategoryAccount(key));
-        }
-    }
-
-    private void deleteTransaction() {
-        System.out.println("Eintrag entfernen:");
-        Transaction transaction = createTransaction();
-        removeTransaction(transaction);
-    }
-
-    private void makeTransaction() {
-        System.out.println("Eintrag hinzufügen:");
-        Transaction transaction = createTransaction();
-        addTransaction(transaction);
-    }
-
-    private Transaction createTransaction() {
-        int date = createNumberPrompt("Geben Sie das Datum ein (yymmdd):");
-        int amount = createNumberPrompt("Geben Sie den Betrag ein (positiv für einnahmen/ negativ für Ausgaben):");
-        String category = createStringPrompt("Geben Sie die Kategorie des Eintrages ein:");
-        String description = createStringPrompt("Geben Sie eine kurze Beschreibung für den Eintrag ein:");
-        return new Transaction(date, amount, category, description);
-    }
-
     public void printMainScreen() {
         System.out.println("=".repeat(TERMINAL_LENGTH));
         System.out.println("Haushaltsbuch by Malte & Martin");
@@ -107,6 +79,14 @@ public class Application {
         }
     }
 
+    public void removeTransaction(Transaction transaction) {
+        doubleEntryBookkeepingAccount.removeTransaction(transaction);
+    }
+
+    public boolean isVerified() {
+        return doubleEntryBookkeepingAccount.isVerified();
+    }
+
     private void printMainScreenNavigationMenu() {
         System.out.println("=".repeat(TERMINAL_LENGTH));
         System.out.println("Geben Sie eine der folgenden Aktionen mit der jeweiligen Nummer ein und bestätigen mit Enter.");
@@ -130,11 +110,31 @@ public class Application {
         doubleEntryBookkeepingAccount.addTransaction(transaction);
     }
 
-    public void removeTransaction(Transaction transaction) {
-        doubleEntryBookkeepingAccount.removeTransaction(transaction);
+    private void printTransaction() {
+        System.out.println("Eintrag entfernen:");
+        for (String key : doubleEntryBookkeepingAccount.getExpenses().getAccounts().keySet()) {
+            ConsoleOutput consoleOutput = new ConsoleOutput();
+            consoleOutput.printTable(doubleEntryBookkeepingAccount.getExpenses().getCategoryAccount(key));
+        }
     }
 
-    public boolean isVerified() {
-        return doubleEntryBookkeepingAccount.isVerified();
+    private void deleteTransaction() {
+        System.out.println("Eintrag entfernen:");
+        Transaction transaction = createTransaction();
+        removeTransaction(transaction);
+    }
+
+    private void makeTransaction() {
+        System.out.println("Eintrag hinzufügen:");
+        Transaction transaction = createTransaction();
+        addTransaction(transaction);
+    }
+
+    private Transaction createTransaction() {
+        int date = createNumberPrompt("Geben Sie das Datum ein (yymmdd):");
+        int amount = createNumberPrompt("Geben Sie den Betrag ein (positiv für einnahmen/ negativ für Ausgaben):");
+        String category = createStringPrompt("Geben Sie die Kategorie des Eintrages ein:");
+        String description = createStringPrompt("Geben Sie eine kurze Beschreibung für den Eintrag ein:");
+        return new Transaction(date, amount, category, description);
     }
 }
