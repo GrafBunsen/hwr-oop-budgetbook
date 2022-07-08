@@ -33,12 +33,23 @@ public class Expenses {
         accounts.put(category, expensesAccount);
     }
 
+    public void removeTransaction(Transaction transaction) {
+        String category = transaction.getCategory();
+
+        Account account = accounts.get(category);
+        account.removeEntry(transaction);
+    }
+
     public int calculateSumOfExpenses() {
         int sumOfExpenses = 0;
         for (String key : accounts.keySet()) {
             sumOfExpenses = accounts.get(key).sumOverAllEntries();
         }
         return sumOfExpenses;
+    }
+
+    public Map<String, Account> getAccounts() {
+        return accounts;
     }
 
     public Account getCategoryAccount(String category) {

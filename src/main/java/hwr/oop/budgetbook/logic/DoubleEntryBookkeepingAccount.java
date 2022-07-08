@@ -1,5 +1,7 @@
 package hwr.oop.budgetbook.logic;
 
+import hwr.oop.budgetbook.exceptions.CouldNotVerifyException;
+import hwr.oop.budgetbook.exceptions.ReadCsvFileFailedException;
 import hwr.oop.budgetbook.models.Transaction;
 
 import java.util.Objects;
@@ -18,17 +20,27 @@ public class DoubleEntryBookkeepingAccount {
         expenses = givenAccount.getExpenses();
     }
 
+    public  DoubleEntryBookkeepingAccount(Expenses expenses, Income income){
+        this.income = income;
+        this.expenses = expenses;
+    }
+
     public Income getIncome() {
         return income;
     }
 
-    public Expenses getExpenses(){
+    public Expenses getExpenses() {
         return expenses;
     }
 
     public void addTransaction(Transaction transaction) {
         expenses.addTransaction(transaction);
         income.addTransaction(transaction);
+    }
+
+    public void removeTransaction(Transaction transaction) {
+        expenses.removeTransaction(transaction);
+        income.removeEntry(transaction);
     }
 
     public Account getExpenseCategoryAccount(String category) {
@@ -40,7 +52,11 @@ public class DoubleEntryBookkeepingAccount {
         int sumOfIncome = income.calculateSumOfIncome();
 
         int sum = sumOfIncome + sumOfExpenses;
-        return sum == 0;
+        if (sum== 0) {
+            return true;
+        } else {
+            throw new CouldNotVerifyException("Something went wrong during DoubleEntryBookkeeping");
+        }
     }
 
     @Override
