@@ -13,13 +13,22 @@ public class DoubleEntryBookkeepingAccount {
         expenses = new Expenses();
     }
 
-    public void addTransaction(Transaction transaction) {
-        expenses.addTransaction(transaction);
-        income.addTransaction(transaction);
+    public DoubleEntryBookkeepingAccount(DoubleEntryBookkeepingAccount givenAccount) {
+        income = givenAccount.getIncome();
+        expenses = givenAccount.getExpenses();
     }
 
     public Income getIncome() {
         return income;
+    }
+
+    public Expenses getExpenses(){
+        return expenses;
+    }
+
+    public void addTransaction(Transaction transaction) {
+        expenses.addTransaction(transaction);
+        income.addTransaction(transaction);
     }
 
     public Account getExpenseCategoryAccount(String category) {
