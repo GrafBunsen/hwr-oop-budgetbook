@@ -10,20 +10,20 @@ With this expense tracker you keep track of your income and expenses. You can ca
 
 ## Feature List
 
-| Number | Feature                | Tests                      | Category      |
-|--------|------------------------|----------------------------|---------------|
-| 1      | Accounting             | AccountTest                | Bookkeeping   |
-| 2      | DoubleEntryBookkeeping | DoubleentrybookkeepingTest | Bookkeeping   |
-| 3      | Expenses               | ExpensesTest               | Bookkeeping   |
-| 4      | Income                 | IncomeTest                 | Bookkeeping   |
-| 5      | Entry                  | EntryTest                  | Bookkeeping   |
-| 6      | Transaction            | TransactionTest            | Bookkeeping   |
-| 7      | AccountPersistence     | AccountPersistenceTest     | View / Export |
-| 8      | EntryListConverter     | EntryListConverterTest     | Converter     |
-| 9      | MapConverter           | MapConverterTest           | Converter     |
-| 10     | PersistenceConverter   | PersistenceConverterTest   | Converter     |
-| 11     | Application            | ApplicationTest            | In / Output   |
-| 12     | ConsoleOutput          | ConsoleOutputTest          | Output        |
+| Number | Feature / Component    | Test                       | FeatureCategory |
+|--------|------------------------|----------------------------|-----------------|
+| 1      | Accounting             | AccountTest                | Bookkeeping     |
+| 2      | DoubleEntryBookkeeping | DoubleentrybookkeepingTest | Bookkeeping     |
+| 3      | Expenses               | ExpensesTest               | Bookkeeping     |
+| 4      | Income                 | IncomeTest                 | Bookkeeping     |
+| 5      | Entry                  | EntryTest                  | Bookkeeping     |
+| 6      | Transaction            | TransactionTest            | Bookkeeping     |
+| 7      | AccountPersistence     | AccountPersistenceTest     | Data / Export   |
+| 8      | EntryListConverter     | EntryListConverterTest     | Converter       |
+| 9      | MapConverter           | MapConverterTest           | Converter       |
+| 10     | PersistenceConverter   | PersistenceConverterTest   | Converter       |
+| 11     | Application            | ApplicationTest            | In / Output     |
+| 12     | ConsoleOutput          | ConsoleOutputTest          | Output          |
 
 
 ## Additional Dependencies
