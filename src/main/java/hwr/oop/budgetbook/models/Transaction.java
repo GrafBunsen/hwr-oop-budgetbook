@@ -6,6 +6,7 @@ public class Transaction {
     String category;
     String description;
 
+
     public Transaction(int newDate, int newAmount, String newCategory, String newDescription) {
         date = newDate;
         amount = newAmount;

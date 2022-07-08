@@ -31,35 +31,20 @@ public class AccountTest {
     @Test
     void addEntry_EntryIsGiven_isAddedToTable() {
         Transaction givenTransaction = getTestTransaction();
-        Entry expectedEntry = getExpectedEntry(1);
-
+        Entry expectedEntry = getExpectedEntry();
         Account account = new Account("Test");
         account.addEntry(givenTransaction);
-
         assertThat(account.getTable()).containsValues(expectedEntry);
     }
 
     @Test
-    void removeEntry_anEntryIsSpecifiedById_IsRemoved() {
+    void removeEntry_anEntryIsGiven_IsRemoved() {
         Transaction givenTransaction = getTestTransaction();
-        Entry expectedEntry = getExpectedEntry(1);
+        Entry expectedEntry = getExpectedEntry();
         Account account = new Account("Test");
 
         account.addEntry(givenTransaction);
-        account.removeEntry(1);
-        assertThat(account.getTable()).doesNotContainValue(expectedEntry);
-    }
-
-    @Test
-    void removeLastEntry_TableIsGiven_LastEntryIsRemoved() {
-        Transaction givenTransaction = getTestTransaction();
-        Entry expectedEntry = getExpectedEntry(3);
-        Account account = new Account("Test");
-
-        account.addEntry(givenTransaction);
-        account.addEntry(givenTransaction);
-        account.addEntry(givenTransaction);
-        account.removeLastEntry();
+        account.removeEntry(givenTransaction);
         assertThat(account.getTable()).doesNotContainValue(expectedEntry);
     }
 
@@ -93,8 +78,8 @@ public class AccountTest {
         return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
     }
 
-    private Entry getExpectedEntry(int id) {
-        return new Entry(id, getTestTransaction());
+    private Entry getExpectedEntry() {
+        return new Entry(1, getTestTransaction());
     }
 }
 

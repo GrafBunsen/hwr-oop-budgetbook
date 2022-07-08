@@ -22,13 +22,18 @@ public class DoubleEntryBookkeepingAccount {
         return income;
     }
 
-    public Expenses getExpenses(){
+    public Expenses getExpenses() {
         return expenses;
     }
 
     public void addTransaction(Transaction transaction) {
         expenses.addTransaction(transaction);
         income.addTransaction(transaction);
+    }
+
+    public void removeTransaction(Transaction transaction) {
+        expenses.removeTransaction(transaction);
+        income.removeEntry(transaction);
     }
 
     public Account getExpenseCategoryAccount(String category) {

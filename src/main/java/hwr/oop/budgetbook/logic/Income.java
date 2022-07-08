@@ -20,6 +20,11 @@ public class Income {
         balance.addEntry(incomeTransaction);
     }
 
+    public void removeEntry(Transaction transaction) {
+        transaction.setAmount(transaction.getAmount() * -1);
+        balance.removeEntry(transaction);
+    }
+
     public Map<Integer, Entry> getTable() {
         return balance.getTable();
     }

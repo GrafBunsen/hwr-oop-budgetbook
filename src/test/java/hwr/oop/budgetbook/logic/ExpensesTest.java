@@ -3,12 +3,15 @@ package hwr.oop.budgetbook.logic;
 import hwr.oop.budgetbook.models.Transaction;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class ExpensesTest {
     @Test
-    public void getAccounts_unknownCategoryGiven_returnNull() {
+    public void getCategoryAccount_unknownCategoryGiven_returnNull() {
         Expenses expenses = new Expenses();
         Transaction testTransaction = getTestTransaction();
         expenses.addTransaction(testTransaction);
@@ -16,6 +19,23 @@ public class ExpensesTest {
         Account categoryAccount = expenses.getCategoryAccount("Test");
 
         assertThat(categoryAccount).isEqualTo(null);
+    }
+
+    @Test
+    public void getAccounts_() {
+        Expenses expenses = new Expenses();
+        expenses.addTransaction(getTestTransaction());
+
+        Map<String, Account> accounts = expenses.getAccounts();
+
+        Account expectedAccount = new Account("Einkauf");
+        Transaction expectedTransaction = getTestTransaction();
+        expectedTransaction.setAmount(50);
+        expectedAccount.addEntry(expectedTransaction);
+        Map<String, Account> expectedAccounts = new HashMap<>();
+        expectedAccounts.put("Einkauf", expectedAccount);
+
+        assertThat(accounts).isEqualTo(expectedAccounts);
     }
 
     @Test
@@ -45,6 +65,6 @@ public class ExpensesTest {
     }
 
     private Transaction getTestTransaction() {
-        return new Transaction(220102, 50, "Einkauf", "Wocheneinkauf REWE");
+        return new Transaction(220102, -50, "Einkauf", "Wocheneinkauf REWE");
     }
 }

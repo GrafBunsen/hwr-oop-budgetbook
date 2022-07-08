@@ -61,6 +61,13 @@ public class Entry {
         this.description = description;
     }
 
+    public boolean isDerivedOf(Transaction transaction) {
+        return Objects.equals(date, transaction.date)
+                && Objects.equals(amount, transaction.amount)
+                && Objects.equals(category, transaction.category)
+                && Objects.equals(description, transaction.description);
+    }
+
     @Override
     public boolean equals(Object o) {
         // self check

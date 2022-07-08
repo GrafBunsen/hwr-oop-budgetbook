@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DoubleEntryBookkeepingAccountTest {
 
     @Test
-    public void DoubleEntryBookkeepingAccount_isGiven_isSaved(){
+    public void DoubleEntryBookkeepingAccount_isGiven_isSaved() {
         DoubleEntryBookkeepingAccount givenAccount = new DoubleEntryBookkeepingAccount();
         givenAccount.addTransaction(getTestTransaction());
 
@@ -19,6 +19,7 @@ public class DoubleEntryBookkeepingAccountTest {
 
         assertThat(givenAccount).isEqualTo(constructedAccount);
     }
+
     @Test
     public void addTransaction_entryIsInExpenses_isTrue() {
         Transaction testTransaction = getTestTransaction();
@@ -71,6 +72,30 @@ public class DoubleEntryBookkeepingAccountTest {
         Map<Integer, Entry> categoryAccountTable = doubleEntryBookkeepingAccount.getExpenseCategoryAccount("Einkauf").getTable();
 
         assertThat(categoryAccountTable).containsValues(expectedFirstEntry, expectedSecondEntry);
+    }
+
+    @Test
+    public void removeTransaction_TransactionSpecified_isRemoved() {
+        Transaction testTransaction = getTestTransaction();
+        Transaction differentTransaction = getTestTransaction();
+        differentTransaction.setAmount(99);
+
+        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
+        doubleEntryBookkeepingAccount.addTransaction(testTransaction);
+        doubleEntryBookkeepingAccount.addTransaction(differentTransaction);
+        doubleEntryBookkeepingAccount.addTransaction(differentTransaction);
+
+        doubleEntryBookkeepingAccount.removeTransaction(testTransaction);
+
+        Entry expectedExpenseEntry = getExpectedEntry();
+        Entry expectedIncomeEntry = getExpectedEntry();
+        expectedIncomeEntry.setAmount(-1 * expectedIncomeEntry.getAmount());
+        Account expensesAccount = doubleEntryBookkeepingAccount.getExpenseCategoryAccount(testTransaction.getCategory());
+        Map<Integer, Entry> incomeAccountTable = doubleEntryBookkeepingAccount.getIncome().getTable();
+
+        assertThat(expensesAccount.getTable()).doesNotContainValue(expectedExpenseEntry);
+        assertThat(incomeAccountTable).doesNotContainValue(expectedIncomeEntry);
+
     }
 
     @Test
