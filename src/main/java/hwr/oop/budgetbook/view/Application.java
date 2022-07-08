@@ -25,33 +25,49 @@ public class Application {
         printMainScreen();
         int menuPoint = 1;
         while (menuPoint != 0) {
+            printMainScreenNavigationMenu();
             menuPoint = createNumberPrompt("Eingabe:");
             if (menuPoint == 1) {
-                System.out.println("Eintrag hinzufügen:");
-                int date = createNumberPrompt("Geben Sie das Datum ein (yymmdd):");
-                int amount = createNumberPrompt("Geben Sie den Betrag ein (positiv für einnahmen/ negativ für Ausgaben):");
-                String category = createStringPrompt("Geben Sie die Kategorie des Eintrages ein:");
-                String description = createStringPrompt("Geben Sie eine kurze Beschreibung für den Eintrag ein:");
-                Transaction transaction = new Transaction(date, amount, category, description);
-                addTransaction(transaction);
+                makeTransaction();
             } else if (menuPoint == 2) {
-                System.out.println("Eintrag entfernen:");
-                int date = createNumberPrompt("Geben Sie den Betrag des zu entfernenden Eintrages ein:");
-                int amount = createNumberPrompt("Geben Sie das Datum des zu entfernenden Eintrages ein ein:");
-                String category = createStringPrompt("Geben Sie die Kategorie des zu entfernenden Eintrages ein ein:");
-                String description = createStringPrompt("Geben Sie die Beschreibung des zu entfernenden Eintrages ein:");
-                Transaction transaction = new Transaction(date, amount, category, description);
-                removeTransaction(transaction);
+                deleteTransaction();
             } else if (menuPoint == 3) {
-                for (String key : doubleEntryBookkeepingAccount.getExpenses().getAccounts().keySet()) {
-                    ConsoleOutput consoleOutput = new ConsoleOutput();
-                    consoleOutput.printTable(doubleEntryBookkeepingAccount.getExpenses().getCategoryAccount(key));
-                }
+                printTransaction();
+            } else if (menuPoint == 0) {
+                System.out.println("Auf Wiedersehen");
             } else {
                 System.out.println("Üngültige Eingabe. Versuchen Sie es erneut.");
             }
-            saveData();
         }
+        saveData();
+    }
+
+    private void printTransaction() {
+        System.out.println("Eintrag entfernen:");
+        for (String key : doubleEntryBookkeepingAccount.getExpenses().getAccounts().keySet()) {
+            ConsoleOutput consoleOutput = new ConsoleOutput();
+            consoleOutput.printTable(doubleEntryBookkeepingAccount.getExpenses().getCategoryAccount(key));
+        }
+    }
+
+    private void deleteTransaction() {
+        System.out.println("Eintrag entfernen:");
+        Transaction transaction = createTransaction();
+        removeTransaction(transaction);
+    }
+
+    private void makeTransaction() {
+        System.out.println("Eintrag hinzufügen:");
+        Transaction transaction = createTransaction();
+        addTransaction(transaction);
+    }
+
+    private Transaction createTransaction() {
+        int date = createNumberPrompt("Geben Sie das Datum ein (yymmdd):");
+        int amount = createNumberPrompt("Geben Sie den Betrag ein (positiv für einnahmen/ negativ für Ausgaben):");
+        String category = createStringPrompt("Geben Sie die Kategorie des Eintrages ein:");
+        String description = createStringPrompt("Geben Sie eine kurze Beschreibung für den Eintrag ein:");
+        return new Transaction(date, amount, category, description);
     }
 
     public void printMainScreen() {
