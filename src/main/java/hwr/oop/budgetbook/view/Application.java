@@ -22,7 +22,6 @@ public class Application {
     }
 
     public void main() {
-        printMainScreen();
         int menuPoint = 1;
         while (menuPoint != 0) {
             printMainScreenNavigationMenu();
@@ -36,10 +35,10 @@ public class Application {
             } else if (menuPoint == 0) {
                 System.out.println("Auf Wiedersehen");
             } else {
-                System.out.println("Üngültige Eingabe. Versuchen Sie es erneut.");
+                System.out.println("Ungültige Eingabe. Versuchen Sie es erneut.");
             }
         }
-        if(isVerified()){
+        if (isVerified()) {
             saveData();
         }
     }
@@ -57,9 +56,7 @@ public class Application {
         try {
             System.out.println(message);
             Scanner scanner = new Scanner(System.in);
-            int input = scanner.nextInt();
-            scanner.close();
-            return input;
+            return scanner.nextInt();
         } catch (InputMismatchException mismatchException) {
             System.out.println("Diese Eingabe war nicht gültig. Verwenden Sie eine andere oder beenden Sie die Eingabe mit 0");
             return createNumberPrompt(message);
@@ -70,9 +67,7 @@ public class Application {
         try {
             System.out.println(message);
             Scanner scanner = new Scanner(System.in);
-            String input = scanner.next();
-            scanner.close();
-            return input;
+            return scanner.next();
         } catch (InputMismatchException mismatchException) {
             System.out.println("Diese Eingabe war nicht gültig. Verwenden Sie eine andere oder beenden Sie die Eingabe mit 'exit'");
             return createStringPrompt(message);
@@ -111,7 +106,7 @@ public class Application {
     }
 
     private void printTransaction() {
-        System.out.println("Eintrag entfernen:");
+        System.out.println("Einträge:");
         for (String key : doubleEntryBookkeepingAccount.getExpenses().getAccounts().keySet()) {
             ConsoleOutput consoleOutput = new ConsoleOutput();
             consoleOutput.printTable(doubleEntryBookkeepingAccount.getExpenses().getCategoryAccount(key));

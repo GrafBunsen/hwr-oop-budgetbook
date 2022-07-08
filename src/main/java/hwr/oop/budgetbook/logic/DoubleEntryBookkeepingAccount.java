@@ -52,11 +52,10 @@ public class DoubleEntryBookkeepingAccount {
         int sumOfIncome = income.calculateSumOfIncome();
 
         int sum = sumOfIncome + sumOfExpenses;
-        if(sum== 0){
+        if (sum== 0) {
             return true;
-        }else {
+        } else {
             throw new CouldNotVerifyException("Something went wrong during DoubleEntryBookkeeping");
-
         }
     }
 
