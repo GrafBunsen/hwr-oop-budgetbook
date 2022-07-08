@@ -1,7 +1,10 @@
 package hwr.oop.budgetbook.logic;
 
+import hwr.oop.budgetbook.exceptions.CouldNotVerifyException;
+import hwr.oop.budgetbook.exceptions.ReadCsvFileFailedException;
 import hwr.oop.budgetbook.models.Entry;
 import hwr.oop.budgetbook.models.Transaction;
+import hwr.oop.budgetbook.persistence.AccountPersistence;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -16,6 +19,15 @@ public class DoubleEntryBookkeepingAccountTest {
         givenAccount.addTransaction(getTestTransaction());
 
         DoubleEntryBookkeepingAccount constructedAccount = new DoubleEntryBookkeepingAccount(givenAccount);
+
+        assertThat(givenAccount).isEqualTo(constructedAccount);
+    }
+
+    public void DoubleEntryBookkeepingAccount_isGivenIncomeAndExpenses_isSaved() {
+        DoubleEntryBookkeepingAccount givenAccount = new DoubleEntryBookkeepingAccount();
+        givenAccount.addTransaction(getTestTransaction());
+
+        DoubleEntryBookkeepingAccount constructedAccount = new DoubleEntryBookkeepingAccount(givenAccount.getExpenses(),givenAccount.getIncome());
 
         assertThat(givenAccount).isEqualTo(constructedAccount);
     }
@@ -139,6 +151,31 @@ public class DoubleEntryBookkeepingAccountTest {
         DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
         DoubleEntryBookkeepingAccount equaldoubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount();
         assertThat(doubleEntryBookkeepingAccount).isEqualTo(equaldoubleEntryBookkeepingAccount);
+    }
+
+    @Test
+    void isVerified_cantVerify_throwsException() {
+        Throwable thrown = catchVerifyThrowable();
+        assertThat(thrown).isInstanceOf(CouldNotVerifyException.class).hasMessageContaining("Something went wrong during DoubleEntryBookkeeping");
+    }
+
+    private Throwable catchVerifyThrowable() {
+        Expenses expenses = new Expenses();
+        expenses.addTransaction(getTestTransaction());
+        Transaction differentTransaction = getTestTransaction();
+        differentTransaction.setAmount(100);
+        Income income = new Income();
+        income.addTransaction(differentTransaction);
+        DoubleEntryBookkeepingAccount doubleEntryBookkeepingAccount = new DoubleEntryBookkeepingAccount(expenses,income);
+
+        Throwable thrown = null;
+        try {
+            doubleEntryBookkeepingAccount.isVerified();
+        } catch (CouldNotVerifyException e) {
+            e.printStackTrace();
+            thrown = e;
+        }
+        return thrown;
     }
 
     private Transaction getTestTransaction() {

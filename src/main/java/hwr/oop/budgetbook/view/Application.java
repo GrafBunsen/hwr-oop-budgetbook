@@ -39,7 +39,9 @@ public class Application {
                 System.out.println("Üngültige Eingabe. Versuchen Sie es erneut.");
             }
         }
-        saveData();
+        if(isVerified()){
+            saveData();
+        }
     }
 
     private void printTransaction() {
